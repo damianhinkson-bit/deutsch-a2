@@ -1,0 +1,29 @@
+{
+  "name": "A2 Grammatik",
+  "short_name": "A2 Grammatik",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f5f2ec",
+  "theme_color": "#0e4f5c",
+  "lang": "de",
+  "description": "A2 German grammar trainer",
+  "icons": [
+    {
+      "src": "icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icons/maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

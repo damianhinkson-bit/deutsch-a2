@@ -1,0 +1,1371 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>A2 Grammatik</title>
+<meta name="description" content="A2 German grammar trainer: rule cards and drills for each rule.">
+<meta name="theme-color" content="#0e4f5c">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<style>
+@font-face{font-family:"Bricolage";src:url("fonts/bricolage.woff2") format("woff2");font-weight:200 800;font-display:swap}
+:root{
+  --bg:#f5f2ec;--surface:#ffffff;--surface-2:#eef3f3;--ink:#12262b;--ink-2:#4d6266;--line:#dde4e4;
+  --petrol:#0e4f5c;--petrol-2:#17707f;--petrol-soft:#dcebed;
+  --amber:#e8961e;--amber-ink:#8a5200;--amber-soft:#fbecd3;
+  --good:#1d7a52;--good-soft:#dcf1e6;--bad:#b83b2e;--bad-soft:#f8e0dc;
+  --shadow:0 1px 2px rgba(14,79,92,.06),0 4px 14px rgba(14,79,92,.06);
+  --r:16px;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0b1b1f;--surface:#122a30;--surface-2:#17343b;--ink:#e7efef;--ink-2:#9fb4b7;--line:#244449;
+  --petrol:#5fb7c4;--petrol-2:#7ccad5;--petrol-soft:#173c43;
+  --amber:#f2ac45;--amber-ink:#f6c477;--amber-soft:#3a2b12;
+  --good:#5fd29b;--good-soft:#123628;--bad:#f08a7d;--bad-soft:#3d1c18;
+  --shadow:none;
+}}
+:root[data-theme="dark"]{
+  --bg:#0b1b1f;--surface:#122a30;--surface-2:#17343b;--ink:#e7efef;--ink-2:#9fb4b7;--line:#244449;
+  --petrol:#5fb7c4;--petrol-2:#7ccad5;--petrol-soft:#173c43;
+  --amber:#f2ac45;--amber-ink:#f6c477;--amber-soft:#3a2b12;
+  --good:#5fd29b;--good-soft:#123628;--bad:#f08a7d;--bad-soft:#3d1c18;
+  --shadow:none;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:var(--bg);color:var(--ink)}
+body{font-family:"Bricolage",system-ui,-apple-system,"Segoe UI",sans-serif;font-size:17px;line-height:1.45;min-height:100vh;padding-bottom:env(safe-area-inset-bottom)}
+button{font:inherit;color:inherit;cursor:pointer}
+input,textarea{font:inherit;color:var(--ink)}
+.wrap{max-width:640px;margin:0 auto;padding:0 16px 96px}
+.top{position:sticky;top:0;z-index:5;background:var(--bg);padding:calc(10px + env(safe-area-inset-top)) 16px 10px;display:flex;align-items:center;gap:10px;max-width:640px;margin:0 auto}
+.top h1{font-size:22px;margin:0;font-weight:750;letter-spacing:-.01em;flex:1;min-width:0}
+.top h1 small{display:block;font-size:13px;font-weight:500;color:var(--ink-2);letter-spacing:0}
+.icon-btn{width:42px;height:42px;border-radius:12px;border:1px solid var(--line);background:var(--surface);display:grid;place-items:center;flex:none}
+.icon-btn svg{width:20px;height:20px}
+.warn{background:var(--amber-soft);color:var(--amber-ink);border-radius:12px;padding:10px 12px;font-size:14px;margin:0 0 12px}
+.hero{background:var(--petrol);color:#fff;border-radius:22px;padding:18px;margin:4px 0 18px;position:relative;overflow:hidden}
+:root[data-theme="dark"] .hero{background:#0f3d46}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .hero{background:#0f3d46}}
+.hero .big{font-size:40px;font-weight:800;line-height:1;letter-spacing:-.02em}
+.hero .lbl{font-size:14px;opacity:.85;margin-top:4px}
+.hero .bar{height:8px;background:rgba(255,255,255,.18);border-radius:8px;margin:14px 0 16px;overflow:hidden}
+.hero .bar i{display:block;height:100%;background:var(--amber);border-radius:8px}
+.hero-actions{display:flex;gap:10px}
+.btn{border:0;border-radius:14px;padding:13px 16px;font-weight:650;font-size:16px;display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px}
+.btn-amber{background:var(--amber);color:#2a1800}
+.btn-ghost{background:rgba(255,255,255,.12);color:#fff}
+.btn-primary{background:var(--petrol);color:#fff;width:100%}
+:root[data-theme="dark"] .btn-primary{color:#06252b}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .btn-primary{color:#06252b}}
+.btn-line{background:var(--surface);border:1px solid var(--line);width:100%}
+.btn[disabled]{opacity:.45;cursor:default}
+.hero-actions .btn{flex:1;padding:12px 10px;font-size:15px}
+.sec{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-2);margin:22px 2px 10px}
+.rules{display:grid;gap:10px;grid-template-columns:minmax(0,1fr)}
+.rule{display:flex;gap:14px;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:14px;text-align:left;box-shadow:var(--shadow);width:100%}
+.rule .num{width:38px;height:38px;border-radius:11px;background:var(--petrol-soft);color:var(--petrol);display:grid;place-items:center;font-weight:750;flex:none}
+.rule .meta{flex:1;min-width:0}
+.rule .t{font-weight:650;line-height:1.25}
+.rule .s{font-size:14px;color:var(--ink-2);margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mbar{height:6px;background:var(--surface-2);border-radius:6px;margin-top:9px;overflow:hidden}
+.mbar i{display:block;height:100%;background:var(--petrol-2);border-radius:6px}
+.mbar i.gold{background:var(--amber)}
+.pct{font-size:13px;font-weight:700;color:var(--ink-2);flex:none;text-align:right;min-width:44px}
+.pct span{display:block;font-weight:500;font-size:11.5px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px;box-shadow:var(--shadow);margin-bottom:12px}
+.card p{margin:0 0 10px}
+.intro{font-size:18px}
+.tbl{overflow-x:auto;margin:6px -4px 10px;padding:0 4px}
+table{border-collapse:collapse;width:100%;font-size:15px}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:12.5px;text-transform:uppercase;letter-spacing:.05em;color:var(--petrol);font-weight:700;white-space:nowrap}
+td:first-child{font-weight:600}
+tr:last-child td{border-bottom:0}
+td.nw{white-space:nowrap}
+ul.pts{margin:0;padding:0;list-style:none;display:grid;gap:8px}
+ul.pts li{padding-left:22px;position:relative}
+ul.pts li:before{content:"";position:absolute;left:4px;top:.6em;width:8px;height:8px;border-radius:3px;background:var(--amber)}
+b{font-weight:700;color:var(--petrol)}
+.ex{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--line)}
+.ex:last-child{border-bottom:0}
+.ex .de{font-weight:600}
+.ex .en{font-size:14px;color:var(--ink-2)}
+.ex>div{flex:1}
+.say{width:36px;height:36px;border-radius:10px;border:1px solid var(--line);background:var(--surface-2);display:grid;place-items:center;flex:none;color:var(--petrol)}
+.say svg{width:18px;height:18px}
+.sticky-cta{position:fixed;left:0;right:0;bottom:0;padding:12px 16px calc(12px + env(safe-area-inset-bottom));background:linear-gradient(transparent,var(--bg) 30%);z-index:4}
+.sticky-cta .in{max-width:608px;margin:0 auto}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{border:1.5px solid var(--line);background:var(--surface);border-radius:999px;padding:9px 14px;font-weight:600;font-size:15px;display:inline-flex;align-items:center;gap:6px}
+.chip.on{border-color:var(--petrol);background:var(--petrol-soft);color:var(--petrol)}
+.chip small{font-weight:500;color:var(--ink-2)}
+.seg{display:flex;background:var(--surface-2);border-radius:14px;padding:4px;gap:4px}
+.seg button{flex:1;border:0;background:transparent;border-radius:11px;padding:10px;font-weight:650}
+.seg button.on{background:var(--surface);box-shadow:var(--shadow);color:var(--petrol)}
+.pick{display:grid;gap:6px}
+.pick label{display:flex;align-items:center;gap:12px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:11px 12px;font-size:15.5px}
+.pick input{width:20px;height:20px;accent-color:var(--petrol);flex:none}
+.pick .p{margin-left:auto;font-size:13px;color:var(--ink-2)}
+.row{display:flex;gap:10px;align-items:center;justify-content:space-between}
+.linkbtn{border:0;background:none;color:var(--petrol);font-weight:650;padding:4px 2px;font-size:15px}
+/* session */
+.prog{height:6px;background:var(--surface-2);border-radius:6px;overflow:hidden;flex:1}
+.prog i{display:block;height:100%;background:var(--amber);transition:width .3s}
+.count{font-size:14px;font-weight:650;color:var(--ink-2);min-width:52px;text-align:right}
+.tag{display:inline-block;font-size:12.5px;font-weight:700;color:var(--petrol);background:var(--petrol-soft);border-radius:8px;padding:4px 9px;margin-bottom:10px}
+.kind{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--amber-ink);margin:2px 0 10px}
+.q{font-size:22px;font-weight:600;line-height:1.5;margin:0 0 8px}
+.q .blank{display:inline-block;min-width:64px;border-bottom:2.5px solid var(--amber);margin:0 2px}
+.gapin{font:inherit;font-weight:700;color:var(--petrol);border:0;border-bottom:2.5px solid var(--amber);background:var(--amber-soft);border-radius:8px 8px 0 0;padding:0 8px;width:7.5em;max-width:60vw;outline:none;text-align:center}
+.gapin:focus{background:var(--petrol-soft);border-bottom-color:var(--petrol)}
+.hint{display:inline-block;font-size:15px;color:var(--ink-2);background:var(--surface-2);border-radius:8px;padding:3px 9px;margin-top:4px}
+.opts{display:grid;gap:10px;margin-top:16px}
+.opt{border:1.5px solid var(--line);background:var(--surface);border-radius:14px;padding:14px 16px;text-align:left;font-weight:600;font-size:17px;min-height:52px}
+.opt.right{border-color:var(--good);background:var(--good-soft)}
+.opt.wrong{border-color:var(--bad);background:var(--bad-soft)}
+.opt[disabled]{cursor:default}
+.src{font-size:20px;font-weight:600;background:var(--surface-2);border-radius:12px;padding:12px 14px;margin:0 0 10px}
+.task{font-weight:650;color:var(--petrol);margin-bottom:10px}
+textarea.uf{width:100%;min-height:96px;border:1.5px solid var(--line);border-radius:14px;padding:12px 14px;background:var(--surface);resize:vertical;font-size:18px;outline:none}
+textarea.uf:focus{border-color:var(--petrol)}
+.keys{display:flex;gap:8px;margin:10px 0 4px}
+.keys button{flex:1;border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:9px 0;font-weight:700;font-size:18px}
+.build{min-height:64px;border:1.5px dashed var(--line);border-radius:14px;padding:10px;display:flex;flex-wrap:wrap;gap:8px;align-content:flex-start;background:var(--surface);margin-top:6px}
+.build.empty:before{content:"Tippe die Wörter in der richtigen Reihenfolge";color:var(--ink-2);font-size:14.5px;padding:6px}
+.pool{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.tok{border:1.5px solid var(--line);background:var(--surface);border-radius:11px;padding:9px 13px;font-weight:650;font-size:17px;box-shadow:var(--shadow)}
+.build .tok:first-child{text-transform:capitalize}
+.build .tok{background:var(--petrol-soft);border-color:transparent;color:var(--petrol)}
+.tok.comma{min-width:38px}
+.fb{border-radius:var(--r);padding:16px;margin-top:16px;border:1.5px solid}
+.fb.ok{background:var(--good-soft);border-color:var(--good)}
+.fb.no{background:var(--bad-soft);border-color:var(--bad)}
+.fb.almost{background:var(--amber-soft);border-color:var(--amber)}
+.fb h3{margin:0 0 6px;font-size:18px}
+.fb.ok h3{color:var(--good)}.fb.no h3{color:var(--bad)}.fb.almost h3{color:var(--amber-ink)}
+.fb .ans{display:flex;gap:10px;align-items:center;font-size:18px;font-weight:650;margin:4px 0}
+.fb .ans>div{flex:1}
+.fb .yours{font-size:14.5px;color:var(--ink-2);margin:2px 0 6px}
+.fb .yours s{text-decoration-color:var(--bad)}
+.fb .why{font-size:15.5px;margin-top:8px}
+.fb .en{font-size:14.5px;color:var(--ink-2);margin-top:4px;font-style:italic}
+.fb .tip{font-size:14.5px;font-weight:600;color:var(--amber-ink);margin-top:6px}
+.actions{margin-top:16px;display:grid;gap:10px}
+.res-big{font-size:56px;font-weight:800;color:var(--petrol);line-height:1;letter-spacing:-.02em}
+.miss{padding:10px 0;border-bottom:1px solid var(--line)}
+.miss:last-child{border-bottom:0}
+.miss .a{font-weight:650}
+.miss .w{font-size:14px;color:var(--ink-2)}
+.toggle{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 0;border-bottom:1px solid var(--line)}
+.toggle:last-child{border-bottom:0}
+.toggle small{display:block;color:var(--ink-2);font-size:13.5px}
+.sw{position:relative;width:52px;height:30px;flex:none}
+.sw input{opacity:0;width:0;height:0}
+.sw span{position:absolute;inset:0;background:var(--surface-2);border:1px solid var(--line);border-radius:999px;transition:.2s}
+.sw span:before{content:"";position:absolute;width:24px;height:24px;left:2px;top:2px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.25);transition:.2s}
+.sw input:checked+span{background:var(--petrol)}
+.sw input:checked+span:before{transform:translateX(22px)}
+.sw input:disabled+span{opacity:.5}
+.empty-note{color:var(--ink-2);font-size:15px;text-align:center;padding:16px}
+.fade{animation:fade .18s ease-out}
+@keyframes fade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+@media (min-width:600px){.q{font-size:24px}}
+</style>
+</head>
+<body>
+<header class="top" id="top"></header>
+<main class="wrap" id="app"></main>
+<div id="cta"></div>
+<script>
+// A2 grammar content. Item types:
+// gap: q (with ___), a: [accepted answers], h: hint
+// mc:  q (with ___ or plain), o: [correct first, then distractors], h: hint
+// sb:  s: sentence (commas as separate tokens), alt: [other accepted orders], cap: keep first word capitalised
+// uf:  q: source, task: instruction, a: [accepted answers]
+// Every item: en (English of the correct sentence), why (short explanation)
+const RULES = [
+{
+  id: "perfekt-hs",
+  title: "Perfekt: haben oder sein",
+  sub: "Talking about the past",
+  card: {
+    intro: "Spoken German uses the Perfekt for the past: <b>haben</b> or <b>sein</b> in position 2, the <b>Partizip II</b> at the end.",
+    tables: [
+      { h: ["sein", "haben"], r: [
+        ["Movement from A to B: gehen, fahren, fliegen, kommen, laufen", "Almost everything else: machen, essen, kaufen, schlafen"],
+        ["Change of state: aufstehen, einschlafen, aufwachen, werden, sterben", "All reflexive verbs: sich waschen, sich freuen"],
+        ["Plus: sein, bleiben, passieren", "Verbs with a direct object: Er hat das Auto gefahren."]
+      ]}
+    ],
+    points: [
+      "ich bin, du bist, er ist, wir sind, ihr seid, sie sind + Partizip",
+      "The Partizip goes to the very end: Ich <b>bin</b> gestern nach Berlin <b>gefahren</b>.",
+      "Duration doesn't change it: Sie <b>ist</b> drei Stunden <b>gelaufen</b>."
+    ],
+    examples: [
+      ["Ich bin um 7 Uhr aufgestanden.", "I got up at 7."],
+      ["Wir haben Pizza gegessen.", "We ate pizza."],
+      ["Was ist passiert?", "What happened?"]
+    ]
+  },
+  items: [
+    { t: "gap", q: "Ich ___ gestern nach Hamburg gefahren.", a: ["bin"], en: "I drove to Hamburg yesterday.", why: "fahren = movement from A to B → sein." },
+    { t: "gap", q: "Wir ___ am Wochenende Pizza gegessen.", a: ["haben"], en: "We ate pizza at the weekend.", why: "essen is not movement or change → haben." },
+    { t: "gap", q: "Um wie viel Uhr ___ du heute aufgestanden?", a: ["bist"], en: "What time did you get up today?", why: "aufstehen = change of state (lying → standing) → sein." },
+    { t: "gap", q: "Das Kind ___ sofort eingeschlafen.", a: ["ist"], en: "The child fell asleep straight away.", why: "einschlafen = change of state → sein." },
+    { t: "gap", q: "___ ihr lange in Berlin geblieben?", a: ["seid"], en: "Did you (all) stay long in Berlin?", why: "bleiben always takes sein. ihr → seid." },
+    { t: "gap", q: "Was ___ passiert?", a: ["ist"], en: "What happened?", why: "passieren always takes sein." },
+    { t: "gap", q: "Meine Eltern ___ mich im Sommer besucht.", a: ["haben"], en: "My parents visited me in the summer.", why: "besuchen has a direct object and no movement meaning → haben." },
+    { t: "gap", q: "Er ___ letztes Jahr Vater geworden.", a: ["ist"], en: "He became a father last year.", why: "werden = change of state → sein." },
+    { t: "mc", q: "Sie ___ drei Stunden im Park gelaufen.", o: ["ist", "hat"], en: "She ran in the park for three hours.", why: "laufen takes sein, even when you say how long." },
+    { t: "mc", q: "Ich ___ mir gestern die Haare gewaschen.", o: ["habe", "bin"], en: "I washed my hair yesterday.", why: "Reflexive verbs always take haben." },
+    { t: "mc", q: "Wir ___ mit dem Zug nach Köln gefahren.", o: ["sind", "haben"], en: "We went to Cologne by train.", why: "Travelling somewhere → sein." },
+    { t: "mc", q: "Er ___ das Auto in die Garage gefahren.", o: ["hat", "ist"], en: "He drove the car into the garage.", why: "Trap: here fahren has a direct object (das Auto) → haben." },
+    { t: "mc", q: "___ du schon in Deutschland gewesen?", o: ["Bist", "Hast"], en: "Have you been to Germany yet?", why: "sein itself takes sein: ich bin gewesen." },
+    { t: "mc", q: "Ich ___ leider krank gewesen.", o: ["bin", "habe"], en: "Unfortunately I was ill.", why: "gewesen always pairs with sein." },
+    { t: "mc", q: "Wann ___ ihr angekommen?", o: ["seid", "habt"], en: "When did you (all) arrive?", why: "ankommen = movement → sein." },
+    { t: "mc", q: "Mein Opa ___ 2019 gestorben.", o: ["ist", "hat"], en: "My grandpa died in 2019.", why: "sterben = change of state → sein." },
+    { t: "sb", s: "Ich bin um sieben Uhr aufgestanden.", en: "I got up at seven.", why: "Helper verb in position 2, Partizip at the end." },
+    { t: "sb", s: "Gestern haben wir einen Film gesehen.", alt: ["Wir haben gestern einen Film gesehen."], en: "Yesterday we watched a film.", why: "If 'gestern' comes first, the helper verb still stays in position 2." },
+    { t: "sb", s: "Seid ihr mit dem Bus gekommen?", en: "Did you come by bus?", why: "Yes/no question: helper verb first, Partizip last." },
+    { t: "sb", s: "Meine Schwester ist nach Spanien geflogen.", en: "My sister flew to Spain.", why: "fliegen → sein. Partizip at the end." },
+    { t: "sb", s: "Am Samstag habe ich lange geschlafen.", alt: ["Ich habe am Samstag lange geschlafen."], en: "On Saturday I slept in.", why: "schlafen is not movement → haben." },
+    { t: "sb", s: "Was hast du am Wochenende gemacht?", en: "What did you do at the weekend?", why: "W-question: W-word, helper verb, subject … Partizip." },
+    { t: "uf", q: "Ich gehe ins Kino.", task: "Ins Perfekt", a: ["Ich bin ins Kino gegangen."], en: "I went to the cinema.", why: "gehen → sein + gegangen." },
+    { t: "uf", q: "Wir trinken einen Kaffee.", task: "Ins Perfekt", a: ["Wir haben einen Kaffee getrunken."], en: "We drank a coffee.", why: "trinken → haben + getrunken." },
+    { t: "uf", q: "Der Zug kommt pünktlich an.", task: "Ins Perfekt", a: ["Der Zug ist pünktlich angekommen."], en: "The train arrived on time.", why: "ankommen → sein + angekommen (ge- goes after the prefix)." },
+    { t: "uf", q: "Sie bleibt zu Hause.", task: "Ins Perfekt", a: ["Sie ist zu Hause geblieben."], en: "She stayed at home.", why: "bleiben → sein + geblieben." },
+    { t: "uf", q: "Du schreibst eine E-Mail.", task: "Ins Perfekt", a: ["Du hast eine E-Mail geschrieben."], en: "You wrote an email.", why: "schreiben → haben + geschrieben." },
+    { t: "uf", q: "Er wird müde.", task: "Ins Perfekt", a: ["Er ist müde geworden."], en: "He got tired.", why: "werden → sein + geworden." }
+  ]
+},
+{
+  id: "partizip",
+  title: "Partizip II bilden",
+  sub: "gemacht, gefahren, eingekauft",
+  card: {
+    intro: "The Partizip II is the past form at the end of a Perfekt sentence. There are four patterns.",
+    tables: [
+      { h: ["Type", "Pattern", "Examples"], r: [
+        ["Regular", "ge- … -t", "machen → gemacht, kaufen → gekauft, arbeiten → gearbeitet"],
+        ["Irregular", "ge- … -en (stem often changes)", "fahren → gefahren, schreiben → geschrieben, trinken → getrunken"],
+        ["Separable", "prefix + ge + verb", "einkaufen → eingekauft, anrufen → angerufen, fernsehen → ferngesehen"],
+        ["No ge-", "be-, ver-, er-, ent-, ge-, zer- and -ieren", "besuchen → besucht, verstehen → verstanden, telefonieren → telefoniert"]
+      ]}
+    ],
+    points: [
+      "Stems ending in -t or -d add -et: arbeiten → gearbeitet, warten → gewartet.",
+      "Mixed verbs: ge- … -t with a stem change: bringen → gebracht, denken → gedacht, kennen → gekannt.",
+      "Inseparable prefixes keep the ending pattern but drop ge-: bekommen → bekommen, vergessen → vergessen."
+    ],
+    examples: [
+      ["Ich habe eingekauft.", "I've done the shopping."],
+      ["Wir haben das nicht verstanden.", "We didn't understand that."],
+      ["Er hat mit der Chefin telefoniert.", "He phoned the boss."]
+    ]
+  },
+  items: [
+    { t: "gap", q: "Ich habe das Fenster ___.", h: "aufmachen", a: ["aufgemacht"], en: "I opened the window.", why: "Separable: auf + ge + macht." },
+    { t: "gap", q: "Wir haben das Wort nicht ___.", h: "verstehen", a: ["verstanden"], en: "We didn't understand the word.", why: "ver- prefix → no ge-. Irregular: verstanden." },
+    { t: "gap", q: "Hast du deine Oma ___?", h: "besuchen", a: ["besucht"], en: "Did you visit your grandma?", why: "be- prefix → no ge-: besucht." },
+    { t: "gap", q: "Er hat mit seiner Chefin ___.", h: "telefonieren", a: ["telefoniert"], en: "He phoned his boss.", why: "-ieren verbs → no ge-: telefoniert." },
+    { t: "gap", q: "Ich habe im Supermarkt ___.", h: "einkaufen", a: ["eingekauft"], en: "I shopped at the supermarket.", why: "Separable: ein + ge + kauft." },
+    { t: "gap", q: "Sie hat einen Brief ___.", h: "schreiben", a: ["geschrieben"], en: "She wrote a letter.", why: "Irregular: schreiben → geschrieben." },
+    { t: "gap", q: "Habt ihr das Essen ___?", h: "bezahlen", a: ["bezahlt"], en: "Did you pay for the food?", why: "be- prefix → no ge-: bezahlt." },
+    { t: "gap", q: "Wir haben lange ___.", h: "warten", a: ["gewartet"], en: "We waited a long time.", why: "Stem ends in -t → add -et: gewartet." },
+    { t: "mc", q: "Ich habe gestern Abend ___.", h: "fernsehen", o: ["ferngesehen", "gefernsehen", "ferngeseht"], en: "I watched TV last night.", why: "Separable + irregular: fern + ge + sehen." },
+    { t: "mc", q: "Hast du meine Nachricht ___?", h: "bekommen", o: ["bekommen", "gebekommen", "bekommt"], en: "Did you get my message?", why: "be- prefix → no ge-. Looks the same as the infinitive." },
+    { t: "mc", q: "Sie hat in Wien ___.", h: "studieren", o: ["studiert", "gestudiert", "studieren"], en: "She studied in Vienna.", why: "-ieren → no ge-." },
+    { t: "mc", q: "Wir haben bis 18 Uhr ___.", h: "arbeiten", o: ["gearbeitet", "gearbeit", "arbeitet"], en: "We worked until 6 pm.", why: "Stem ends in -t → -et." },
+    { t: "mc", q: "Hat dich jemand ___?", h: "anrufen", o: ["angerufen", "angeruft", "geanrufen"], en: "Did someone call you?", why: "Separable + irregular: an + ge + rufen." },
+    { t: "mc", q: "Ich habe seinen Namen ___.", h: "vergessen", o: ["vergessen", "gevergessen", "vergesst"], en: "I've forgotten his name.", why: "ver- prefix → no ge-." },
+    { t: "mc", q: "Wir haben zu viel ___.", h: "trinken", o: ["getrunken", "getrinkt", "getranken"], en: "We drank too much.", why: "Irregular: trinken → getrunken." },
+    { t: "mc", q: "Er hat mir Blumen ___.", h: "bringen", o: ["gebracht", "gebringt", "gebrungen"], en: "He brought me flowers.", why: "Mixed verb: stem change + -t: gebracht." },
+    { t: "sb", s: "Ich habe meinen Schlüssel vergessen.", en: "I forgot my key.", why: "Partizip last." },
+    { t: "sb", s: "Hast du schon eingekauft?", en: "Have you done the shopping yet?", why: "The separable prefix stays joined in the Partizip." },
+    { t: "sb", s: "Wir haben das Problem nicht verstanden.", en: "We didn't understand the problem.", why: "nicht comes before the Partizip." },
+    { t: "sb", s: "Er hat mich gestern angerufen.", en: "He called me yesterday.", why: "Pronoun object early, Partizip last." },
+    { t: "sb", s: "Sie hat in Berlin Medizin studiert.", en: "She studied medicine in Berlin.", why: "studiert at the end." },
+    { t: "sb", s: "Habt ihr gestern ferngesehen?", en: "Did you watch TV yesterday?", why: "Helper verb first in a yes/no question." },
+    { t: "uf", q: "Ich räume die Küche auf.", task: "Ins Perfekt", a: ["Ich habe die Küche aufgeräumt."], en: "I tidied the kitchen.", why: "aufräumen → aufgeräumt." },
+    { t: "uf", q: "Wir verkaufen das Auto.", task: "Ins Perfekt", a: ["Wir haben das Auto verkauft."], en: "We sold the car.", why: "ver- → no ge-: verkauft." },
+    { t: "uf", q: "Er repariert das Fahrrad.", task: "Ins Perfekt", a: ["Er hat das Fahrrad repariert."], en: "He repaired the bike.", why: "-ieren → repariert." },
+    { t: "uf", q: "Sie bringt Kuchen mit.", task: "Ins Perfekt", a: ["Sie hat Kuchen mitgebracht."], en: "She brought cake along.", why: "mitbringen → mit + gebracht." },
+    { t: "uf", q: "Ich erzähle eine Geschichte.", task: "Ins Perfekt", a: ["Ich habe eine Geschichte erzählt."], en: "I told a story.", why: "er- → no ge-: erzählt." },
+    { t: "uf", q: "Du findest die Lösung.", task: "Ins Perfekt", a: ["Du hast die Lösung gefunden."], en: "You found the solution.", why: "Irregular: finden → gefunden." }
+  ]
+},
+{
+  id: "praeteritum",
+  title: "Präteritum: sein, haben, Modalverben",
+  sub: "war, hatte, konnte, musste",
+  card: {
+    intro: "For <b>sein</b>, <b>haben</b> and the modal verbs, Germans use the Präteritum instead of the Perfekt, even when speaking.",
+    tables: [
+      { h: ["", "sein", "haben", "können"], r: [
+        ["ich", "war", "hatte", "konnte"],
+        ["du", "warst", "hattest", "konntest"],
+        ["er/sie/es", "war", "hatte", "konnte"],
+        ["wir", "waren", "hatten", "konnten"],
+        ["ihr", "wart", "hattet", "konntet"],
+        ["sie/Sie", "waren", "hatten", "konnten"]
+      ]},
+      { h: ["Infinitiv", "Präteritum (ich/er)"], r: [
+        ["müssen", "musste"], ["wollen", "wollte"], ["dürfen", "durfte"], ["sollen", "sollte"], ["mögen", "mochte"]
+      ]}
+    ],
+    points: [
+      "Modal verbs lose their umlaut: können → konnte, müssen → musste. With the umlaut (könnte) it means 'could/would'.",
+      "ich and er/sie/es have the same form: ich war, er war.",
+      "The past of möchten is wollte: Ich wollte kommen."
+    ],
+    examples: [
+      ["Gestern war ich müde.", "Yesterday I was tired."],
+      ["Wir hatten keine Zeit.", "We had no time."],
+      ["Ich konnte nicht kommen.", "I couldn't come."]
+    ]
+  },
+  items: [
+    { t: "gap", q: "Gestern ___ ich sehr müde.", h: "sein", a: ["war"], en: "Yesterday I was very tired.", why: "ich → war." },
+    { t: "gap", q: "Wir ___ keine Zeit.", h: "haben", a: ["hatten"], en: "We had no time.", why: "wir → hatten." },
+    { t: "gap", q: "___ du gestern auf der Party?", h: "sein", a: ["warst"], en: "Were you at the party yesterday?", why: "du → warst." },
+    { t: "gap", q: "Ich ___ leider nicht kommen.", h: "können", a: ["konnte"], en: "Unfortunately I couldn't come.", why: "Präteritum drops the umlaut: konnte." },
+    { t: "gap", q: "Er ___ lange arbeiten.", h: "müssen", a: ["musste"], en: "He had to work late.", why: "müssen → musste (no umlaut)." },
+    { t: "gap", q: "Ihr ___ Glück!", h: "haben", a: ["hattet"], en: "You were lucky!", why: "ihr → hattet." },
+    { t: "gap", q: "Die Kinder ___ nicht schlafen.", h: "wollen", a: ["wollten"], en: "The children didn't want to sleep.", why: "sie (plural) → wollten." },
+    { t: "gap", q: "Früher ___ man hier rauchen.", h: "dürfen", a: ["durfte"], en: "You used to be allowed to smoke here.", why: "man works like er → durfte." },
+    { t: "mc", q: "Wo ___ ihr im Urlaub?", o: ["wart", "waren", "wartet"], en: "Where were you on holiday?", why: "ihr → wart." },
+    { t: "mc", q: "Als Kind ___ ich keinen Fisch.", o: ["mochte", "möchte", "mögte"], en: "As a child I didn't like fish.", why: "mögen → mochte. möchte means 'would like'." },
+    { t: "mc", q: "Du ___ doch gestern frei, oder?", o: ["hattest", "hattet", "hatte"], en: "You had the day off yesterday, didn't you?", why: "du → hattest." },
+    { t: "mc", q: "Wir ___ gestern um acht Uhr am Bahnhof sein.", o: ["sollten", "sollen", "sollt"], en: "We were supposed to be at the station at eight yesterday.", why: "gestern → past: sollten." },
+    { t: "mc", q: "___ Sie gestern im Büro?", o: ["Waren", "Wart", "War"], en: "Were you in the office yesterday?", why: "Sie (formal) → waren." },
+    { t: "mc", q: "Ich ___ letzte Woche Kopfschmerzen.", o: ["hatte", "hattete", "habte"], en: "I had a headache last week.", why: "haben → hatte." },
+    { t: "mc", q: "Mein Bruder ___ schon mit fünf Jahren lesen.", o: ["konnte", "könnte", "kannte"], en: "My brother could already read at five.", why: "konnte = could (past). könnte = would be able; kannte = knew (kennen)." },
+    { t: "mc", q: "Warum ___ du so früh gehen?", o: ["musstest", "müsstest", "musst"], en: "Why did you have to leave so early?", why: "Past without umlaut: musstest." },
+    { t: "sb", s: "Letztes Jahr war ich in Österreich.", alt: ["Ich war letztes Jahr in Österreich."], en: "Last year I was in Austria.", why: "Verb in position 2." },
+    { t: "sb", s: "Wir hatten gestern keinen Strom.", alt: ["Gestern hatten wir keinen Strom."], en: "We had no electricity yesterday.", why: "Verb in position 2." },
+    { t: "sb", s: "Ich konnte die Aufgabe nicht lösen.", en: "I couldn't solve the task.", why: "Modal in position 2, infinitive at the end." },
+    { t: "sb", s: "Warum musstest du so lange warten?", en: "Why did you have to wait so long?", why: "W-word, modal, subject … infinitive." },
+    { t: "sb", s: "Die Party war wirklich toll.", en: "The party was really great.", why: "Simple statement with war." },
+    { t: "sb", s: "Sie wollte Ärztin werden.", en: "She wanted to become a doctor.", why: "Modal + infinitive at the end." },
+    { t: "uf", q: "Ich bin im Büro.", task: "Ins Präteritum", a: ["Ich war im Büro."], en: "I was in the office.", why: "bin → war." },
+    { t: "uf", q: "Wir haben Hunger.", task: "Ins Präteritum", a: ["Wir hatten Hunger."], en: "We were hungry.", why: "haben → hatten." },
+    { t: "uf", q: "Du kannst gut schwimmen.", task: "Ins Präteritum", a: ["Du konntest gut schwimmen."], en: "You could swim well.", why: "kannst → konntest." },
+    { t: "uf", q: "Er muss zum Arzt gehen.", task: "Ins Präteritum", a: ["Er musste zum Arzt gehen."], en: "He had to go to the doctor.", why: "muss → musste." },
+    { t: "uf", q: "Ihr seid sehr nett.", task: "Ins Präteritum", a: ["Ihr wart sehr nett."], en: "You were very kind.", why: "seid → wart." },
+    { t: "uf", q: "Sie will nach Hause fahren.", task: "Ins Präteritum", a: ["Sie wollte nach Hause fahren."], en: "She wanted to go home.", why: "will → wollte." }
+  ]
+},
+{
+  id: "dativ",
+  title: "Dativ: Artikel und Pronomen",
+  sub: "dem, der, den …-n, mir, dir, ihm",
+  card: {
+    intro: "The Dativ answers <b>wem?</b> (to/for whom?). With verbs like geben, schenken, zeigen, bringen, the person is Dativ and the thing is Akkusativ.",
+    tables: [
+      { h: ["", "der (m)", "die (f)", "das (n)", "die (Pl)"], r: [
+        ["bestimmt", "dem", "der", "dem", "den …-n"],
+        ["ein/kein", "einem", "einer", "einem", "keinen …-n"],
+        ["mein", "meinem", "meiner", "meinem", "meinen …-n"]
+      ]},
+      { h: ["ich", "du", "er", "sie", "es", "wir", "ihr", "sie", "Sie"], r: [
+        ["mir", "dir", "ihm", "ihr", "ihm", "uns", "euch", "ihnen", "Ihnen"]
+      ]}
+    ],
+    points: [
+      "Plural nouns add -n in the Dativ: die Kinder → den Kinder<b>n</b>.",
+      "Noun + noun: Dativ before Akkusativ: Ich gebe <b>dem Mann</b> den Schlüssel.",
+      "Pronoun + pronoun: Akkusativ first: Ich gebe <b>es dir</b>."
+    ],
+    examples: [
+      ["Ich schenke meiner Mutter Blumen.", "I'm giving my mother flowers."],
+      ["Kannst du mir das Salz geben?", "Can you pass me the salt?"],
+      ["Ich gebe es dir.", "I'll give it to you."]
+    ]
+  },
+  items: [
+    { t: "gap", q: "Ich schenke ___ Mutter Blumen.", h: "meine", a: ["meiner"], en: "I'm giving my mother flowers.", why: "feminine Dativ → meiner." },
+    { t: "gap", q: "Er zeigt ___ Kind das Bild.", h: "das", a: ["dem"], en: "He shows the child the picture.", why: "neuter Dativ → dem." },
+    { t: "gap", q: "Kannst du ___ das Salz geben?", h: "ich", a: ["mir"], en: "Can you pass me the salt?", why: "ich → mir in the Dativ." },
+    { t: "gap", q: "Wir kaufen ___ Kindern Eis.", h: "die", a: ["den"], en: "We buy the children ice cream.", why: "plural Dativ → den (+ -n on the noun)." },
+    { t: "gap", q: "Ich bringe ___ einen Kaffee.", h: "du", a: ["dir"], en: "I'll bring you a coffee.", why: "du → dir." },
+    { t: "gap", q: "Gib ___ bitte das Buch!", h: "er", a: ["ihm"], en: "Please give him the book!", why: "er → ihm." },
+    { t: "gap", q: "Die Lehrerin erklärt ___ die Grammatik.", h: "wir", a: ["uns"], en: "The teacher explains the grammar to us.", why: "wir → uns." },
+    { t: "gap", q: "Ich schicke ___ Freund eine Karte.", h: "mein", a: ["meinem"], en: "I'm sending my friend a card.", why: "masculine Dativ → meinem." },
+    { t: "mc", q: "Wir schreiben ___ Oma einen Brief.", o: ["unserer", "unsere", "unseren"], en: "We're writing our grandma a letter.", why: "feminine Dativ → -er." },
+    { t: "mc", q: "Ich gebe ___ Mann den Schlüssel.", o: ["dem", "den", "der"], en: "I give the man the key.", why: "The person receiving = Dativ: dem Mann." },
+    { t: "mc", q: "Darf ich ___ etwas zeigen, Frau Klein?", o: ["Ihnen", "ihnen", "Sie"], en: "May I show you something, Ms Klein?", why: "Formal Sie → Ihnen (capital I)." },
+    { t: "mc", q: "Er schenkt ___ Freundin eine Kette.", o: ["seiner", "seine", "seinem"], en: "He gives his girlfriend a necklace.", why: "feminine Dativ → seiner." },
+    { t: "mc", q: "Die Kinder geben ___ Hund Wasser.", o: ["dem", "den", "der"], en: "The children give the dog water.", why: "der Hund → dem Hund." },
+    { t: "mc", q: "Der Kellner bringt ___ die Rechnung.", h: "wir", o: ["uns", "unser", "wir"], en: "The waiter brings us the bill.", why: "wir → uns." },
+    { t: "mc", q: "Er erklärt ___ Leuten den Weg.", o: ["den", "die", "der"], en: "He explains the way to the people.", why: "plural Dativ → den Leuten." },
+    { t: "mc", q: "Gibst du mir das Buch? – Ja, ich gebe ___.", o: ["es dir", "dir es", "es dich"], en: "Will you give me the book? – Yes, I'll give it to you.", why: "Two pronouns: Akkusativ (es) before Dativ (dir)." },
+    { t: "sb", s: "Ich schenke meinem Vater eine Uhr.", en: "I'm giving my father a watch.", why: "Dativ noun before Akkusativ noun." },
+    { t: "sb", s: "Kannst du mir bitte das Salz geben?", en: "Can you please pass me the salt?", why: "Pronoun early, infinitive last." },
+    { t: "sb", s: "Wir zeigen den Gästen die Stadt.", en: "We show the guests the city.", why: "Dativ (den Gästen) before Akkusativ (die Stadt)." },
+    { t: "sb", s: "Die Ärztin erklärt ihm das Problem.", en: "The doctor explains the problem to him.", why: "Pronoun before noun." },
+    { t: "sb", s: "Ich habe es dir schon gesagt.", en: "I already told you.", why: "es before dir." },
+    { t: "sb", s: "Er bringt seiner Frau Blumen mit.", en: "He brings his wife flowers.", why: "mitbringen: prefix mit at the end." },
+    { t: "uf", q: "Ich gebe meinem Bruder das Geld.", task: "»meinem Bruder« → Pronomen", a: ["Ich gebe ihm das Geld."], en: "I give him the money.", why: "masculine Dativ → ihm." },
+    { t: "uf", q: "Sie schenkt ihrer Tochter ein Fahrrad.", task: "»ihrer Tochter« → Pronomen", a: ["Sie schenkt ihr ein Fahrrad."], en: "She gives her a bike.", why: "feminine Dativ → ihr." },
+    { t: "uf", q: "Ich zeige den Kindern den Zoo.", task: "»den Kindern« → Pronomen", a: ["Ich zeige ihnen den Zoo."], en: "I show them the zoo.", why: "plural Dativ → ihnen." },
+    { t: "uf", q: "Er erklärt der Frau den Weg.", task: "»der Frau« → Pronomen", a: ["Er erklärt ihr den Weg."], en: "He explains the way to her.", why: "feminine Dativ → ihr." },
+    { t: "uf", q: "Bring dem Baby die Flasche!", task: "»dem Baby« → Pronomen", a: ["Bring ihm die Flasche!"], en: "Bring it the bottle!", why: "neuter Dativ → ihm." },
+    { t: "uf", q: "Ich gebe dir das Buch.", task: "»das Buch« → Pronomen", a: ["Ich gebe es dir."], en: "I'll give it to you.", why: "Akkusativ pronoun (es) moves before the Dativ pronoun." }
+  ]
+},
+{
+  id: "dativverben",
+  title: "Verben mit Dativ",
+  sub: "helfen, gefallen, gehören, schmecken",
+  card: {
+    intro: "Some verbs take <b>only a Dativ</b> object, even though English uses a direct object.",
+    tables: [
+      { h: ["Verb", "Example"], r: [
+        ["helfen", "Ich helfe <b>dir</b>."],
+        ["danken", "Ich danke <b>Ihnen</b>."],
+        ["gefallen", "Das Kleid gefällt <b>mir</b>."],
+        ["gehören", "Das Handy gehört <b>ihm</b>."],
+        ["schmecken", "Die Suppe schmeckt <b>uns</b>."],
+        ["passen / stehen", "Die Hose passt <b>dir</b> nicht. Die Jacke steht <b>dir</b>."],
+        ["gratulieren, antworten, glauben, zuhören", "Wir gratulieren <b>euch</b>."]
+      ]}
+    ],
+    points: [
+      "With gefallen and schmecken, the <b>thing</b> is the subject: Die Schuhe gefall<b>en</b> mir (plural verb!).",
+      "Fixed phrases: Wie geht es <b>dir</b>? <b>Mir</b> ist kalt.",
+      "Watch glauben: Ich glaube <b>ihm</b> (I believe him)."
+    ],
+    examples: [
+      ["Der Film hat mir gefallen.", "I liked the film."],
+      ["Kannst du mir helfen?", "Can you help me?"],
+      ["Wem gehört das?", "Whose is this?"]
+    ]
+  },
+  items: [
+    { t: "gap", q: "Kannst du ___ helfen?", h: "ich", a: ["mir"], en: "Can you help me?", why: "helfen takes the Dativ → mir." },
+    { t: "gap", q: "Das Essen schmeckt ___ sehr gut.", h: "wir", a: ["uns"], en: "We really like the food.", why: "schmecken + Dativ → uns." },
+    { t: "gap", q: "Wem gehört das Handy? – Es gehört ___.", h: "er", a: ["ihm"], en: "Whose phone is it? – It's his.", why: "gehören + Dativ → ihm." },
+    { t: "gap", q: "Ich danke ___ für die Hilfe.", h: "Sie", a: ["Ihnen"], en: "Thank you for the help.", why: "danken + Dativ; formal Sie → Ihnen." },
+    { t: "gap", q: "Die Hose passt ___ nicht.", h: "du", a: ["dir"], en: "The trousers don't fit you.", why: "passen + Dativ → dir." },
+    { t: "gap", q: "Wir gratulieren ___ zum Geburtstag.", h: "ihr", a: ["euch"], en: "We wish you (all) happy birthday.", why: "gratulieren + Dativ; ihr → euch." },
+    { t: "gap", q: "Wie geht es ___?", h: "du", a: ["dir"], en: "How are you?", why: "Fixed phrase with the Dativ." },
+    { t: "gap", q: "Die Schuhe gefallen ___ Frau.", h: "meine", a: ["meiner"], en: "My wife likes the shoes.", why: "gefallen + Dativ; feminine → meiner." },
+    { t: "mc", q: "Ich helfe ___ Vater im Garten.", o: ["meinem", "meinen", "mein"], en: "I help my father in the garden.", why: "helfen + Dativ; masculine → meinem." },
+    { t: "mc", q: "Der Film hat ___ nicht gefallen.", o: ["mir", "mich", "ich"], en: "I didn't like the film.", why: "gefallen + Dativ → mir." },
+    { t: "mc", q: "Die Kinder hören ___ Lehrerin zu.", o: ["der", "die", "den"], en: "The children listen to the teacher.", why: "zuhören + Dativ; feminine → der." },
+    { t: "mc", q: "Mir ___ die Bilder sehr gut.", o: ["gefallen", "gefällt", "gefallt"], en: "I really like the pictures.", why: "The subject is 'die Bilder' (plural) → gefallen." },
+    { t: "mc", q: "Kannst du ___ bitte antworten?", o: ["mir", "mich", "mein"], en: "Can you please answer me?", why: "antworten + Dativ → mir." },
+    { t: "mc", q: "Das Auto gehört ___ Eltern.", o: ["meinen", "meine", "meiner"], en: "The car belongs to my parents.", why: "plural Dativ → meinen." },
+    { t: "mc", q: "___ ist kalt. Kannst du das Fenster zumachen?", o: ["Mir", "Ich", "Mich"], en: "I'm cold. Can you close the window?", why: "Fixed phrase: Mir ist kalt (not 'Ich bin kalt')." },
+    { t: "mc", q: "Ich glaube ___ nicht.", h: "er", o: ["ihm", "ihn", "er"], en: "I don't believe him.", why: "glauben + person → Dativ: ihm." },
+    { t: "sb", s: "Das Wetter gefällt mir nicht.", en: "I don't like the weather.", why: "Thing = subject, person = Dativ." },
+    { t: "sb", s: "Gehört der Schlüssel dir?", en: "Is the key yours?", why: "gehören + Dativ." },
+    { t: "sb", s: "Ich danke dir für das Geschenk.", en: "Thank you for the present.", why: "danken + Dativ + für." },
+    { t: "sb", s: "Die Jacke steht dir sehr gut.", en: "The jacket really suits you.", why: "stehen (to suit) + Dativ." },
+    { t: "sb", s: "Wir helfen unseren Nachbarn.", en: "We help our neighbours.", why: "helfen + plural Dativ." },
+    { t: "sb", s: "Wie schmeckt dir die Suppe?", en: "How do you like the soup?", why: "schmecken + Dativ." },
+    { t: "uf", q: "Ich mag den Film.", task: "Mit »gefallen«", a: ["Der Film gefällt mir.", "Mir gefällt der Film."], en: "I like the film.", why: "der Film becomes the subject." },
+    { t: "uf", q: "Ich mag die Schuhe.", task: "Mit »gefallen«", a: ["Die Schuhe gefallen mir.", "Mir gefallen die Schuhe."], en: "I like the shoes.", why: "Plural subject → gefallen." },
+    { t: "uf", q: "Das ist mein Fahrrad.", task: "Mit »gehören«", a: ["Das Fahrrad gehört mir."], en: "The bike belongs to me.", why: "gehören + Dativ → mir." },
+    { t: "uf", q: "Wir finden den Kuchen lecker.", task: "Mit »schmecken«", a: ["Der Kuchen schmeckt uns.", "Uns schmeckt der Kuchen."], en: "We like the cake.", why: "der Kuchen = subject, uns = Dativ." },
+    { t: "uf", q: "Er findet die Stadt schön.", task: "Mit »gefallen«", a: ["Die Stadt gefällt ihm.", "Ihm gefällt die Stadt."], en: "He likes the city.", why: "die Stadt = subject, ihm = Dativ." },
+    { t: "uf", q: "Das ist das Auto von Anna.", task: "Mit »gehören«", a: ["Das Auto gehört Anna."], en: "The car belongs to Anna.", why: "gehören + Dativ (names take no ending)." }
+  ]
+},
+{
+  id: "dativpraep",
+  title: "Präpositionen mit Dativ",
+  sub: "aus, bei, mit, nach, seit, von, zu",
+  card: {
+    intro: "These prepositions <b>always</b> take the Dativ: <b>aus, bei, mit, nach, seit, von, zu</b> (and gegenüber).",
+    tables: [
+      { h: ["Short form", "= "], r: [
+        ["zum", "zu dem"], ["zur", "zu der"], ["beim", "bei dem"], ["vom", "von dem"]
+      ]},
+      { h: ["Where to?", "Where?"], r: [
+        ["nach Berlin / nach Spanien (cities, most countries)", "in Berlin"],
+        ["zu Anna / zum Arzt / zur Post (people, places)", "bei Anna / beim Arzt"],
+        ["nach Hause", "zu Hause"]
+      ]}
+    ],
+    points: [
+      "seit + Dativ for something that started in the past and still continues: seit <b>einem</b> Jahr.",
+      "Countries with an article: aus <b>der</b> Türkei, aus <b>der</b> Schweiz, aus <b>dem</b> Iran.",
+      "bei + company = works there: Ich arbeite bei Siemens."
+    ],
+    examples: [
+      ["Ich fahre mit dem Bus zur Arbeit.", "I go to work by bus."],
+      ["Seit einem Jahr wohne ich hier.", "I've lived here for a year."],
+      ["Ich gehe nach Hause.", "I'm going home."]
+    ]
+  },
+  items: [
+    { t: "gap", q: "Ich fahre mit ___ Bus.", h: "der", a: ["dem"], en: "I go by bus.", why: "mit + Dativ; der Bus → dem." },
+    { t: "gap", q: "Sie kommt aus ___ Türkei.", h: "die", a: ["der"], en: "She comes from Turkey.", why: "aus + Dativ; feminine → der." },
+    { t: "gap", q: "Seit ___ Jahr lerne ich Deutsch.", h: "ein", a: ["einem"], en: "I've been learning German for a year.", why: "seit + Dativ; das Jahr → einem." },
+    { t: "gap", q: "Ich gehe heute ___ Arzt.", h: "zu + dem", a: ["zum"], en: "I'm going to the doctor today.", why: "zu + dem → zum." },
+    { t: "gap", q: "Nach ___ Essen trinken wir Kaffee.", h: "das", a: ["dem"], en: "After the meal we drink coffee.", why: "nach + Dativ; neuter → dem." },
+    { t: "gap", q: "Er wohnt bei ___ Eltern.", h: "seine", a: ["seinen"], en: "He lives with his parents.", why: "bei + plural Dativ → seinen." },
+    { t: "gap", q: "Ich gehe ___ Bäckerei.", h: "zu + die", a: ["zur"], en: "I'm going to the bakery.", why: "zu + der → zur." },
+    { t: "gap", q: "Das Geschenk ist von ___ Freundin.", h: "meine", a: ["meiner"], en: "The present is from my girlfriend.", why: "von + Dativ; feminine → meiner." },
+    { t: "mc", q: "Ich fliege morgen ___ Berlin.", o: ["nach", "zu", "in"], en: "I'm flying to Berlin tomorrow.", why: "Cities → nach." },
+    { t: "mc", q: "Wir gehen heute Abend ___ Peter.", o: ["zu", "nach", "bei"], en: "We're going to Peter's tonight.", why: "To a person → zu." },
+    { t: "mc", q: "Am Abend gehe ich ___ Hause.", o: ["nach", "zu", "bei"], en: "In the evening I go home.", why: "Going home → nach Hause." },
+    { t: "mc", q: "Am Wochenende bin ich ___ Hause.", o: ["zu", "nach", "bei"], en: "At the weekend I'm at home.", why: "Being at home → zu Hause." },
+    { t: "mc", q: "Ich arbeite ___ Siemens.", o: ["bei", "mit", "zu"], en: "I work at Siemens.", why: "Working for a company → bei." },
+    { t: "mc", q: "Er wartet ___ zwei Stunden.", o: ["seit", "vor", "von"], en: "He's been waiting for two hours.", why: "Started in the past, still going → seit." },
+    { t: "mc", q: "Fährst du ___ Fahrrad zur Arbeit?", o: ["mit dem", "mit das", "mit den"], en: "Do you cycle to work?", why: "mit + Dativ; das Fahrrad → dem." },
+    { t: "mc", q: "Das Café ist gegenüber ___ Bahnhof.", o: ["dem", "den", "der"], en: "The café is opposite the station.", why: "gegenüber + Dativ; der Bahnhof → dem." },
+    { t: "sb", s: "Ich fahre jeden Tag mit der U-Bahn zur Arbeit.", alt: ["Jeden Tag fahre ich mit der U-Bahn zur Arbeit."], en: "I take the underground to work every day.", why: "Time – manner – place: jeden Tag, mit der U-Bahn, zur Arbeit." },
+    { t: "sb", s: "Seit drei Monaten wohne ich in Köln.", alt: ["Ich wohne seit drei Monaten in Köln."], en: "I've lived in Cologne for three months.", why: "seit + plural Dativ: Monaten." },
+    { t: "sb", s: "Nach dem Kurs gehen wir zum Supermarkt.", alt: ["Wir gehen nach dem Kurs zum Supermarkt."], en: "After the course we go to the supermarket.", why: "nach dem (time), zum (place)." },
+    { t: "sb", s: "Kommst du aus der Schweiz?", en: "Are you from Switzerland?", why: "die Schweiz → aus der Schweiz." },
+    { t: "sb", s: "Ich habe beim Bäcker Brötchen gekauft.", en: "I bought rolls at the baker's.", why: "bei + dem → beim." },
+    { t: "sb", s: "Sie fährt mit ihren Kindern nach Italien.", en: "She's going to Italy with her children.", why: "mit + plural Dativ; nach + country." },
+    { t: "uf", q: "Wohin gehst du? (zu – die Post)", task: "Antworte mit ganzem Satz", a: ["Ich gehe zur Post."], en: "I'm going to the post office.", why: "zu + der → zur." },
+    { t: "uf", q: "Woher kommst du? (aus – der Iran)", task: "Antworte mit ganzem Satz", a: ["Ich komme aus dem Iran."], en: "I come from Iran.", why: "aus + Dativ; der Iran → dem Iran." },
+    { t: "uf", q: "Wie fährst du zur Arbeit? (mit – das Auto)", task: "Antworte mit ganzem Satz", a: ["Ich fahre mit dem Auto.", "Ich fahre mit dem Auto zur Arbeit."], en: "I go by car.", why: "mit + Dativ; das Auto → dem." },
+    { t: "uf", q: "Wo wohnst du? (bei – meine Tante)", task: "Antworte mit ganzem Satz", a: ["Ich wohne bei meiner Tante."], en: "I live with my aunt.", why: "bei + Dativ; feminine → meiner." },
+    { t: "uf", q: "Seit wann lernst du Deutsch? (seit – ein Monat)", task: "Antworte mit ganzem Satz", a: ["Ich lerne seit einem Monat Deutsch.", "Seit einem Monat lerne ich Deutsch."], en: "I've been learning German for a month.", why: "seit + Dativ; der Monat → einem." },
+    { t: "uf", q: "Wohin fliegst du? (nach – Wien)", task: "Antworte mit ganzem Satz", a: ["Ich fliege nach Wien."], en: "I'm flying to Vienna.", why: "Cities → nach, no article." }
+  ]
+},
+{
+  id: "wechsel",
+  title: "Wechselpräpositionen",
+  sub: "Wo? → Dativ · Wohin? → Akkusativ",
+  card: {
+    intro: "<b>an, auf, hinter, in, neben, über, unter, vor, zwischen</b> take two cases. Ask: is it a location or a movement towards a place?",
+    tables: [
+      { h: ["Wo? → Dativ (position)", "Wohin? → Akkusativ (direction)"], r: [
+        ["liegen: Das Buch liegt auf <b>dem</b> Tisch.", "legen: Ich lege das Buch auf <b>den</b> Tisch."],
+        ["stehen: Die Tasse steht im Schrank.", "stellen: Ich stelle die Tasse in <b>den</b> Schrank."],
+        ["sitzen: Ich sitze auf <b>dem</b> Stuhl.", "(sich) setzen: Ich setze mich auf <b>den</b> Stuhl."],
+        ["hängen: Das Bild hängt an <b>der</b> Wand.", "hängen: Ich hänge das Bild an <b>die</b> Wand."],
+        ["sein: Ich bin im Kino.", "gehen: Ich gehe ins Kino."]
+      ]}
+    ],
+    points: [
+      "Short forms: in dem → <b>im</b>, in das → <b>ins</b>, an dem → <b>am</b>, an das → <b>ans</b>.",
+      "Feminine changes der ↔ die, masculine dem ↔ den, neuter dem ↔ das.",
+      "Position verbs (liegen, stehen, sitzen) are irregular; movement verbs (legen, stellen, setzen) are regular."
+    ],
+    examples: [
+      ["Die Kinder spielen im Garten.", "The children play in the garden."],
+      ["Wir gehen in den Park.", "We're going to the park."],
+      ["Der Hund liegt unter dem Tisch.", "The dog is lying under the table."]
+    ]
+  },
+  items: [
+    { t: "gap", q: "Das Buch liegt auf ___ Tisch.", h: "der", a: ["dem"], en: "The book is on the table.", why: "liegen = Wo? → Dativ: dem." },
+    { t: "gap", q: "Ich lege das Buch auf ___ Tisch.", h: "der", a: ["den"], en: "I put the book on the table.", why: "legen = Wohin? → Akkusativ: den." },
+    { t: "gap", q: "Wir gehen heute ___ Kino.", h: "in + das", a: ["ins"], en: "We're going to the cinema today.", why: "Movement → Akkusativ: in das → ins." },
+    { t: "gap", q: "Die Kinder spielen ___ Garten.", h: "in + dem", a: ["im"], en: "The children are playing in the garden.", why: "Location → Dativ: in dem → im." },
+    { t: "gap", q: "Ich hänge das Bild an ___ Wand.", h: "die", a: ["die"], en: "I hang the picture on the wall.", why: "Movement → Akkusativ; feminine stays die." },
+    { t: "gap", q: "Das Bild hängt an ___ Wand.", h: "die", a: ["der"], en: "The picture is hanging on the wall.", why: "Location → Dativ; feminine → der." },
+    { t: "gap", q: "Die Katze schläft unter ___ Bett.", h: "das", a: ["dem"], en: "The cat sleeps under the bed.", why: "Location → Dativ; neuter → dem." },
+    { t: "gap", q: "Stell die Flasche in ___ Kühlschrank!", h: "der", a: ["den"], en: "Put the bottle in the fridge!", why: "stellen = movement → Akkusativ: den." },
+    { t: "mc", q: "Wo ist mein Handy? – Es liegt ___ Sofa.", o: ["auf dem", "auf das", "auf den"], en: "Where's my phone? – It's on the sofa.", why: "Wo? → Dativ; das Sofa → dem." },
+    { t: "mc", q: "Ich setze mich ___ Stuhl.", o: ["auf den", "auf dem", "auf der"], en: "I sit down on the chair.", why: "sich setzen = movement → Akkusativ." },
+    { t: "mc", q: "Wir fahren am Wochenende ___ Berge.", o: ["in die", "in den", "in der"], en: "We're going to the mountains at the weekend.", why: "Movement; plural Akkusativ → die." },
+    { t: "mc", q: "Das Auto steht ___ Haus.", o: ["vor dem", "vor das", "vor den"], en: "The car is in front of the house.", why: "stehen = location → Dativ." },
+    { t: "mc", q: "Die Lampe hängt ___ Tisch.", o: ["über dem", "über den", "über das"], en: "The lamp hangs above the table.", why: "Location → Dativ; der Tisch → dem." },
+    { t: "mc", q: "Wohin gehst du? – ___ Supermarkt.", o: ["In den", "Im", "In dem"], en: "Where are you going? – To the supermarket.", why: "Wohin? → Akkusativ: in den." },
+    { t: "mc", q: "Sie arbeitet ___ Krankenhaus.", o: ["im", "ins", "in den"], en: "She works in the hospital.", why: "Location → Dativ: im." },
+    { t: "mc", q: "Leg die Zeitung bitte ___ Regal.", o: ["ins", "im", "in der"], en: "Please put the newspaper on the shelf.", why: "legen = movement → in das → ins." },
+    { t: "sb", s: "Ich stelle die Blumen auf den Tisch.", en: "I put the flowers on the table.", why: "stellen → Akkusativ." },
+    { t: "sb", s: "Die Schuhe stehen vor der Tür.", en: "The shoes are in front of the door.", why: "stehen → Dativ." },
+    { t: "sb", s: "Wir sitzen im Garten und trinken Tee.", en: "We're sitting in the garden drinking tea.", why: "sitzen → Dativ: im." },
+    { t: "sb", s: "Legst du die Schlüssel in die Schublade?", en: "Will you put the keys in the drawer?", why: "legen → Akkusativ." },
+    { t: "sb", s: "Am Samstag gehen wir ins Museum.", alt: ["Wir gehen am Samstag ins Museum."], en: "On Saturday we're going to the museum.", why: "Movement → ins." },
+    { t: "sb", s: "Der Hund liegt unter dem Tisch.", en: "The dog is lying under the table.", why: "liegen → Dativ." },
+    { t: "uf", q: "Ich lege das Handy auf den Tisch.", task: "Wo ist es jetzt? (liegen)", a: ["Das Handy liegt auf dem Tisch.", "Es liegt auf dem Tisch."], en: "The phone is on the table.", why: "liegen → Dativ: auf dem." },
+    { t: "uf", q: "Ich stelle die Tasse in den Schrank.", task: "Wo ist sie jetzt? (stehen)", a: ["Die Tasse steht im Schrank.", "Die Tasse steht in dem Schrank.", "Sie steht im Schrank."], en: "The cup is in the cupboard.", why: "stehen → Dativ: im." },
+    { t: "uf", q: "Ich hänge die Jacke an die Tür.", task: "Wo ist sie jetzt? (hängen)", a: ["Die Jacke hängt an der Tür.", "Sie hängt an der Tür."], en: "The jacket is hanging on the door.", why: "Location → Dativ: an der." },
+    { t: "uf", q: "Die Kinder sind im Park.", task: "Wohin? (gehen)", a: ["Die Kinder gehen in den Park.", "Sie gehen in den Park."], en: "The children are going to the park.", why: "Movement → Akkusativ: in den." },
+    { t: "uf", q: "Ich setze das Kind auf den Stuhl.", task: "Wo ist es jetzt? (sitzen)", a: ["Das Kind sitzt auf dem Stuhl.", "Es sitzt auf dem Stuhl."], en: "The child is sitting on the chair.", why: "sitzen → Dativ: auf dem." },
+    { t: "uf", q: "Der Teller steht auf dem Tisch.", task: "Wohin? (ich – stellen)", a: ["Ich stelle den Teller auf den Tisch."], en: "I put the plate on the table.", why: "stellen → Akkusativ: auf den." }
+  ]
+},
+{
+  id: "nebensatz",
+  title: "Nebensätze: weil, dass, wenn, ob",
+  sub: "Verb at the end",
+  card: {
+    intro: "After <b>weil, dass, wenn, ob</b> the conjugated verb goes to the <b>end</b> of the clause. Always put a comma before them.",
+    tables: [
+      { h: ["Word", "Meaning", "Example"], r: [
+        ["weil", "because", "…, weil ich krank <b>bin</b>."],
+        ["dass", "that", "Ich glaube, dass er recht <b>hat</b>."],
+        ["wenn", "if / whenever", "…, wenn ich Zeit <b>habe</b>."],
+        ["ob", "whether (yes/no)", "Ich weiß nicht, ob sie <b>kommt</b>."]
+      ]}
+    ],
+    points: [
+      "Modal or helper verb goes last: …, weil ich arbeiten <b>muss</b> / …, weil ich gegessen <b>habe</b>.",
+      "Separable verbs join up again: …, weil ich früh <b>aufstehe</b>.",
+      "If the Nebensatz comes first, the main clause starts with its verb: Wenn ich Zeit habe, <b>komme</b> ich.",
+      "denn, und, aber, oder do NOT move the verb."
+    ],
+    examples: [
+      ["Ich bleibe zu Hause, weil ich krank bin.", "I'm staying home because I'm ill."],
+      ["Wenn es regnet, gehen wir ins Museum.", "If it rains, we'll go to the museum."],
+      ["Ich weiß nicht, ob er kommt.", "I don't know whether he's coming."]
+    ]
+  },
+  items: [
+    { t: "gap", q: "Ich bleibe zu Hause, weil ich krank ___.", h: "sein", a: ["bin"], en: "I'm staying home because I'm ill.", why: "weil → verb at the end." },
+    { t: "gap", q: "Ich weiß, dass du heute Geburtstag ___.", h: "haben", a: ["hast"], en: "I know that it's your birthday today.", why: "dass → verb at the end." },
+    { t: "gap", q: "Ich weiß, dass der Kurs um neun Uhr ___.", h: "anfangen", a: ["anfängt"], en: "I know that the course starts at nine.", why: "Separable verb at the end joins up again: anfängt." },
+    { t: "gap", q: "Kannst du mir sagen, ___ der Zug pünktlich ist?", a: ["ob"], en: "Can you tell me whether the train is on time?", why: "Hidden yes/no question → ob." },
+    { t: "gap", q: "Ich glaube, ___ er recht hat.", a: ["dass"], en: "I think he's right.", why: "glauben, wissen, hoffen, sagen + dass." },
+    { t: "gap", q: "Er lernt viel, ___ er die Prüfung bestehen will.", a: ["weil"], en: "He studies a lot because he wants to pass the exam.", why: "A reason → weil." },
+    { t: "gap", q: "___ ich Zeit habe, rufe ich dich an.", a: ["wenn"], en: "When I have time, I'll call you.", why: "Condition/time → wenn." },
+    { t: "gap", q: "Ich komme nicht, weil ich arbeiten ___.", h: "müssen", a: ["muss"], en: "I'm not coming because I have to work.", why: "Modal verb goes last, after the infinitive." },
+    { t: "mc", q: "Ich bin müde, weil …", o: ["ich schlecht geschlafen habe", "ich habe schlecht geschlafen", "habe ich schlecht geschlafen"], en: "I'm tired because I slept badly.", why: "Helper verb (habe) at the very end." },
+    { t: "mc", q: "Wenn du Hunger hast, …", o: ["mache ich dir ein Brot", "ich mache dir ein Brot", "ich dir ein Brot mache"], en: "If you're hungry, I'll make you a sandwich.", why: "After the wenn-clause, the main clause starts with the verb." },
+    { t: "mc", q: "Ich weiß nicht, ___ sie heute kommt.", o: ["ob", "dass", "weil"], en: "I don't know whether she's coming today.", why: "Not knowing yes/no → ob." },
+    { t: "mc", q: "Sie sagt, dass sie morgen …", o: ["früh aufsteht", "aufsteht früh", "steht früh auf"], en: "She says she's getting up early tomorrow.", why: "Separable verb joins up at the end." },
+    { t: "mc", q: "Ich hoffe, ___ das Wetter morgen schön ist.", o: ["dass", "ob", "wenn"], en: "I hope the weather is nice tomorrow.", why: "hoffen + dass." },
+    { t: "mc", q: "Ich rufe dich an, …", o: ["wenn ich zu Hause bin", "wenn bin ich zu Hause", "wenn ich bin zu Hause"], en: "I'll call you when I'm home.", why: "Verb at the end." },
+    { t: "mc", q: "Er fragt, ___ wir Zeit haben.", o: ["ob", "dass", "weil"], en: "He's asking whether we have time.", why: "fragen + yes/no → ob." },
+    { t: "mc", q: "Ich lerne Deutsch, weil ich in Berlin …", o: ["arbeiten möchte", "möchte arbeiten", "arbeiten möchten"], en: "I'm learning German because I'd like to work in Berlin.", why: "Infinitive, then the modal last." },
+    { t: "sb", s: "Ich lerne Deutsch , weil ich in Deutschland arbeiten möchte.", en: "I'm learning German because I'd like to work in Germany.", why: "Comma, weil, … modal last." },
+    { t: "sb", s: "Wenn ich Zeit habe , gehe ich ins Fitnessstudio.", alt: ["Ich gehe ins Fitnessstudio , wenn ich Zeit habe."], en: "When I have time, I go to the gym.", why: "wenn-clause first → verb (gehe) right after the comma." },
+    { t: "sb", s: "Ich weiß nicht , ob der Supermarkt heute geöffnet ist.", en: "I don't know whether the supermarket is open today.", why: "ob … ist at the end." },
+    { t: "sb", s: "Sie sagt , dass sie morgen nicht kommen kann.", en: "She says she can't come tomorrow.", why: "dass … kommen kann." },
+    { t: "sb", s: "Er ist glücklich , weil er eine neue Wohnung gefunden hat.", en: "He's happy because he's found a new flat.", why: "Perfekt in a Nebensatz: Partizip, then hat." },
+    { t: "sb", s: "Kannst du mich anrufen , wenn du angekommen bist?", en: "Can you call me when you've arrived?", why: "angekommen bist at the end." },
+    { t: "uf", q: "Ich gehe zum Arzt. Ich habe Fieber.", task: "Verbinde mit »weil«", a: ["Ich gehe zum Arzt, weil ich Fieber habe."], en: "I'm going to the doctor because I have a fever.", why: "habe moves to the end." },
+    { t: "uf", q: "Er sagt: „Ich habe keine Zeit.“", task: "Mit »dass«", a: ["Er sagt, dass er keine Zeit hat."], en: "He says he has no time.", why: "ich → er, and hat goes to the end." },
+    { t: "uf", q: "Hast du morgen Zeit? Ich weiß es nicht.", task: "Mit »ob«: Ich weiß nicht, …", a: ["Ich weiß nicht, ob du morgen Zeit hast."], en: "I don't know whether you have time tomorrow.", why: "Yes/no question → ob + verb at the end." },
+    { t: "uf", q: "Das Wetter ist schön. Wir grillen.", task: "Mit »wenn« am Anfang", a: ["Wenn das Wetter schön ist, grillen wir."], en: "If the weather is nice, we'll have a barbecue.", why: "wenn-clause first → main clause starts with grillen." },
+    { t: "uf", q: "Ich bin spät gekommen. Der Bus hatte Verspätung.", task: "Verbinde mit »weil«", a: ["Ich bin spät gekommen, weil der Bus Verspätung hatte."], en: "I was late because the bus was delayed.", why: "hatte moves to the end." },
+    { t: "uf", q: "Ich bin müde. Ich stehe jeden Tag um fünf Uhr auf.", task: "Verbinde mit »weil«", a: ["Ich bin müde, weil ich jeden Tag um fünf Uhr aufstehe."], en: "I'm tired because I get up at five every day.", why: "Separable verb joins up at the end: aufstehe." }
+  ]
+},
+{
+  id: "reflexiv",
+  title: "Reflexive Verben",
+  sub: "sich freuen, sich treffen, sich waschen",
+  card: {
+    intro: "Reflexive verbs need a pronoun that refers back to the subject: Ich freue <b>mich</b>.",
+    tables: [
+      { h: ["", "Akkusativ", "Dativ (with another object)"], r: [
+        ["ich", "mich", "mir"], ["du", "dich", "dir"], ["er/sie/es", "sich", "sich"],
+        ["wir", "uns", "uns"], ["ihr", "euch", "euch"], ["sie/Sie", "sich", "sich"]
+      ]}
+    ],
+    points: [
+      "Use the Dativ form when there's another object: Ich wasche <b>mich</b>. → Ich wasche <b>mir</b> die Hände.",
+      "Only ich and du change: mich/mir, dich/dir.",
+      "Common: sich freuen auf/über, sich interessieren für, sich ärgern über, sich treffen, sich beeilen, sich anziehen, sich ausruhen, sich erinnern an, sich entschuldigen, sich vorstellen.",
+      "Perfekt always with haben: Ich habe mich gefreut."
+    ],
+    examples: [
+      ["Ich freue mich auf das Wochenende.", "I'm looking forward to the weekend."],
+      ["Wir treffen uns um acht.", "We're meeting at eight."],
+      ["Ich putze mir die Zähne.", "I brush my teeth."]
+    ]
+  },
+  items: [
+    { t: "gap", q: "Ich freue ___ auf das Wochenende.", a: ["mich"], en: "I'm looking forward to the weekend.", why: "ich → mich." },
+    { t: "gap", q: "Interessierst du ___ für Fußball?", a: ["dich"], en: "Are you interested in football?", why: "du → dich." },
+    { t: "gap", q: "Wir treffen ___ um acht vor dem Kino.", a: ["uns"], en: "We're meeting at eight outside the cinema.", why: "wir → uns." },
+    { t: "gap", q: "Er duscht ___ jeden Morgen.", a: ["sich"], en: "He showers every morning.", why: "er → sich." },
+    { t: "gap", q: "Beeilt ___! Der Zug fährt gleich.", a: ["euch"], en: "Hurry up! The train's about to leave.", why: "ihr-command → euch." },
+    { t: "gap", q: "Ich putze ___ die Zähne.", a: ["mir"], en: "I brush my teeth.", why: "Another object (die Zähne) → Dativ: mir." },
+    { t: "gap", q: "Setzen Sie ___ bitte!", a: ["sich"], en: "Please sit down!", why: "Sie → sich." },
+    { t: "gap", q: "Kannst du ___ an seinen Namen erinnern?", a: ["dich"], en: "Can you remember his name?", why: "du → dich." },
+    { t: "mc", q: "Du wäschst ___ die Haare.", o: ["dir", "dich", "sich"], en: "You wash your hair.", why: "Another object (die Haare) → Dativ: dir." },
+    { t: "mc", q: "Meine Eltern ärgern ___ über den Lärm.", o: ["sich", "ihnen", "uns"], en: "My parents are annoyed about the noise.", why: "sie (plural) → sich." },
+    { t: "mc", q: "Ich ziehe ___ schnell an.", o: ["mich", "mir", "sich"], en: "I get dressed quickly.", why: "No other object → Akkusativ: mich." },
+    { t: "mc", q: "Ich ziehe ___ eine Jacke an.", o: ["mir", "mich", "sich"], en: "I put on a jacket.", why: "Another object (eine Jacke) → Dativ: mir." },
+    { t: "mc", q: "Wie fühlst du ___ heute?", o: ["dich", "dir", "sich"], en: "How do you feel today?", why: "du → dich." },
+    { t: "mc", q: "Wir haben ___ sehr über das Geschenk gefreut.", o: ["uns", "unsere", "sich"], en: "We were very happy about the present.", why: "wir → uns." },
+    { t: "mc", q: "Darf ich ___ vorstellen? Ich heiße Lukas.", o: ["mich", "mir", "sich"], en: "May I introduce myself? I'm Lukas.", why: "ich → mich." },
+    { t: "mc", q: "Ihr müsst ___ entschuldigen.", o: ["euch", "sich", "ihr"], en: "You have to apologise.", why: "ihr → euch." },
+    { t: "sb", s: "Ich freue mich auf den Urlaub.", en: "I'm looking forward to the holiday.", why: "Pronoun right after the verb." },
+    { t: "sb", s: "Wir haben uns im Deutschkurs kennengelernt.", en: "We met in the German course.", why: "Perfekt: haben + uns … Partizip." },
+    { t: "sb", s: "Interessierst du dich für Musik?", en: "Are you interested in music?", why: "sich interessieren für." },
+    { t: "sb", s: "Am Wochenende ruhe ich mich aus.", alt: ["Ich ruhe mich am Wochenende aus."], en: "At the weekend I relax.", why: "Separable: aus at the end." },
+    { t: "sb", s: "Er hat sich nicht entschuldigt.", en: "He didn't apologise.", why: "sich before nicht." },
+    { t: "sb", s: "Ich wasche mir die Hände.", en: "I wash my hands.", why: "Dativ mir + Akkusativ die Hände." },
+    { t: "uf", q: "Ich freue mich auf die Party.", task: "Subjekt: wir", a: ["Wir freuen uns auf die Party."], en: "We're looking forward to the party.", why: "wir freuen uns." },
+    { t: "uf", q: "Er interessiert sich für Politik.", task: "Subjekt: du", a: ["Du interessierst dich für Politik."], en: "You're interested in politics.", why: "du interessierst dich." },
+    { t: "uf", q: "Ich wasche mir das Gesicht.", task: "Subjekt: er", a: ["Er wäscht sich das Gesicht."], en: "He washes his face.", why: "er wäscht (umlaut!) sich." },
+    { t: "uf", q: "Sie zieht sich warm an.", task: "Subjekt: ich", a: ["Ich ziehe mich warm an."], en: "I dress warmly.", why: "ich ziehe mich." },
+    { t: "uf", q: "Wir ärgern uns über das Wetter.", task: "Subjekt: ihr", a: ["Ihr ärgert euch über das Wetter."], en: "You're annoyed about the weather.", why: "ihr ärgert euch." },
+    { t: "uf", q: "Ich ruhe mich aus.", task: "Ins Perfekt", a: ["Ich habe mich ausgeruht."], en: "I rested.", why: "Reflexive → haben; aus + ge + ruht." }
+  ]
+},
+{
+  id: "adjektiv",
+  title: "Adjektivendungen",
+  sub: "der alte Mann, ein altes Haus",
+  card: {
+    intro: "An adjective <b>before a noun</b> needs an ending. After the verb it doesn't: Der Tee ist heiß. → der heiß<b>e</b> Tee.",
+    tables: [
+      { h: ["After der/die/das", "m", "f", "n", "Pl"], r: [
+        ["Nom", "-e", "-e", "-e", "-en"],
+        ["Akk", "-en", "-e", "-e", "-en"],
+        ["Dat", "-en", "-en", "-en", "-en"]
+      ]},
+      { h: ["After ein/kein/mein", "m", "f", "n", "Pl"], r: [
+        ["Nom", "-er", "-e", "-es", "-en"],
+        ["Akk", "-en", "-e", "-es", "-en"],
+        ["Dat", "-en", "-en", "-en", "-en"]
+      ]},
+      { h: ["No article", "m", "f", "n", "Pl"], r: [
+        ["Nom", "-er", "-e", "-es", "-e"],
+        ["Akk", "-en", "-e", "-es", "-e"],
+        ["Dat", "-em", "-er", "-em", "-en"]
+      ]}
+    ],
+    points: [
+      "Shortcut: in the Dativ and in plurals with an article, it's almost always <b>-en</b>.",
+      "If the article doesn't show the gender (ein), the adjective does: ein gut<b>er</b> Mann, ein gut<b>es</b> Buch.",
+      "teuer and dunkel drop an e: ein teu<b>r</b>es Hotel, ein dunk<b>l</b>es Zimmer."
+    ],
+    examples: [
+      ["Ich kaufe einen warmen Pullover.", "I'm buying a warm jumper."],
+      ["Das ist ein neues Auto.", "That's a new car."],
+      ["Ich trinke gern schwarzen Kaffee.", "I like drinking black coffee."]
+    ]
+  },
+  items: [
+    { t: "gap", q: "Der ___ Mann ist mein Lehrer.", h: "alt", a: ["alte"], en: "The old man is my teacher.", why: "der + Nom → -e." },
+    { t: "gap", q: "Ich kaufe einen ___ Pullover.", h: "warm", a: ["warmen"], en: "I'm buying a warm jumper.", why: "einen (m Akk) → -en." },
+    { t: "gap", q: "Das ist ein ___ Auto.", h: "neu", a: ["neues"], en: "That's a new car.", why: "ein + neuter → -es." },
+    { t: "gap", q: "Wir wohnen in einer ___ Wohnung.", h: "klein", a: ["kleinen"], en: "We live in a small flat.", why: "Dativ → -en." },
+    { t: "gap", q: "Sie trägt ein ___ Kleid.", h: "rot", a: ["rotes"], en: "She's wearing a red dress.", why: "ein + neuter Akk → -es." },
+    { t: "gap", q: "Ich trinke gern ___ Kaffee.", h: "schwarz", a: ["schwarzen"], en: "I like drinking black coffee.", why: "No article, masculine Akk → -en." },
+    { t: "gap", q: "Mit dem ___ Zug fahren wir nach Hause.", h: "letzt", a: ["letzten"], en: "We take the last train home.", why: "Dativ → -en." },
+    { t: "gap", q: "Die ___ Kinder spielen im Garten.", h: "klein", a: ["kleinen"], en: "The small children are playing in the garden.", why: "Plural with article → -en." },
+    { t: "mc", q: "Ich habe einen ___ Hund.", o: ["kleinen", "kleiner", "kleines"], en: "I have a small dog.", why: "einen (m Akk) → -en." },
+    { t: "mc", q: "Das ist eine ___ Idee!", o: ["gute", "guten", "guter"], en: "That's a good idea!", why: "eine + feminine Nom → -e." },
+    { t: "mc", q: "Hier ist der ___ Kuchen.", o: ["frische", "frischen", "frischer"], en: "Here's the fresh cake.", why: "der + Nom → -e." },
+    { t: "mc", q: "Ich wünsche dir ein ___ Wochenende.", o: ["schönes", "schöne", "schönen"], en: "Have a nice weekend.", why: "ein + neuter Akk → -es." },
+    { t: "mc", q: "Ein ___ Mann hat mir geholfen.", o: ["netter", "nette", "netten"], en: "A nice man helped me.", why: "ein + masculine Nom → -er." },
+    { t: "mc", q: "Wir essen ___ Brot.", o: ["frisches", "frische", "frischen"], en: "We eat fresh bread.", why: "No article, neuter → -es." },
+    { t: "mc", q: "Ich sehe den ___ Bus.", o: ["blauen", "blaue", "blauer"], en: "I see the blue bus.", why: "den (m Akk) → -en." },
+    { t: "mc", q: "Sie hat ___ Haare.", o: ["lange", "langen", "langer"], en: "She has long hair.", why: "No article, plural Akk → -e." },
+    { t: "sb", s: "Ich suche eine günstige Wohnung.", en: "I'm looking for a cheap flat.", why: "eine + f → -e." },
+    { t: "sb", s: "Wir haben einen großen Garten.", en: "We have a big garden.", why: "einen → -en." },
+    { t: "sb", s: "Der neue Kollege kommt aus Spanien.", en: "The new colleague is from Spain.", why: "der + Nom → -e." },
+    { t: "sb", s: "Sie fährt ein kleines rotes Auto.", alt: ["Sie fährt ein rotes kleines Auto."], en: "She drives a small red car.", why: "Both adjectives get the same ending." },
+    { t: "sb", s: "Mit meinem alten Handy kann ich keine Fotos machen.", alt: ["Ich kann mit meinem alten Handy keine Fotos machen."], en: "I can't take photos with my old phone.", why: "Dativ → -en." },
+    { t: "sb", s: "Er trinkt gern kalte Milch.", en: "He likes drinking cold milk.", why: "No article, feminine → -e." },
+    { t: "uf", q: "Der Mantel ist warm. Ich brauche einen Mantel.", task: "Ein Satz", a: ["Ich brauche einen warmen Mantel."], en: "I need a warm coat.", why: "einen → -en." },
+    { t: "uf", q: "Die Stadt ist schön. Wir besuchen die Stadt.", task: "Ein Satz", a: ["Wir besuchen die schöne Stadt."], en: "We visit the beautiful city.", why: "die + f Akk → -e." },
+    { t: "uf", q: "Das Hotel ist teuer. Wir wohnen in einem Hotel.", task: "Ein Satz", a: ["Wir wohnen in einem teuren Hotel."], en: "We're staying in an expensive hotel.", why: "Dativ → -en, and teuer drops the e: teuren." },
+    { t: "uf", q: "Das Buch ist interessant. Ich lese ein Buch.", task: "Ein Satz", a: ["Ich lese ein interessantes Buch."], en: "I'm reading an interesting book.", why: "ein + neuter → -es." },
+    { t: "uf", q: "Die Frau ist freundlich. Ich spreche mit der Frau.", task: "Ein Satz", a: ["Ich spreche mit der freundlichen Frau."], en: "I talk to the friendly woman.", why: "Dativ → -en." },
+    { t: "uf", q: "Die Schuhe sind neu. Das sind meine Schuhe.", task: "Ein Satz", a: ["Das sind meine neuen Schuhe."], en: "These are my new shoes.", why: "meine + plural → -en." }
+  ]
+},
+{
+  id: "komparativ",
+  title: "Komparativ und Superlativ",
+  sub: "größer als, am größten",
+  card: {
+    intro: "Comparative: <b>-er</b> + <b>als</b>. Superlative: <b>am -sten</b>. Equal: <b>so … wie</b>.",
+    tables: [
+      { h: ["Grundform", "Komparativ", "Superlativ"], r: [
+        ["schnell", "schneller", "am schnellsten"],
+        ["alt", "älter", "am ältesten"],
+        ["groß", "größer", "am größten"],
+        ["kurz", "kürzer", "am kürzesten"],
+        ["gut", "besser", "am besten"],
+        ["viel", "mehr", "am meisten"],
+        ["gern", "lieber", "am liebsten"],
+        ["hoch", "höher", "am höchsten"],
+        ["teuer", "teurer", "am teuersten"]
+      ]}
+    ],
+    points: [
+      "Many short words get an umlaut: alt, jung, groß, kalt, warm, lang, kurz, oft.",
+      "Words ending in -t, -d, -s, -ß, -z add -esten: am ältesten, am heißesten.",
+      "Before a noun it takes an adjective ending: der höchst<b>e</b> Berg, ein schneller<b>es</b> Auto.",
+      "Unequal → als: größer <b>als</b>. Equal → so groß <b>wie</b>."
+    ],
+    examples: [
+      ["Berlin ist größer als München.", "Berlin is bigger than Munich."],
+      ["Ich trinke lieber Tee als Kaffee.", "I prefer tea to coffee."],
+      ["Mein Bruder ist so alt wie ich.", "My brother is as old as me."]
+    ]
+  },
+  items: [
+    { t: "gap", q: "Berlin ist ___ als München.", h: "groß", a: ["größer"], en: "Berlin is bigger than Munich.", why: "groß → größer (umlaut)." },
+    { t: "gap", q: "Ich trinke ___ Tee als Kaffee.", h: "gern", a: ["lieber"], en: "I prefer tea to coffee.", why: "gern → lieber (irregular)." },
+    { t: "gap", q: "Mein Bruder ist so alt ___ ich.", a: ["wie"], en: "My brother is as old as me.", why: "Equal → so … wie." },
+    { t: "gap", q: "Heute ist es kälter ___ gestern.", a: ["als"], en: "It's colder today than yesterday.", why: "Comparative → als." },
+    { t: "gap", q: "Wer läuft am ___?", h: "schnell", a: ["schnellsten"], en: "Who runs the fastest?", why: "am + -sten." },
+    { t: "gap", q: "Pizza esse ich am ___.", h: "gern", a: ["liebsten"], en: "I like pizza best.", why: "gern → am liebsten." },
+    { t: "gap", q: "Das ist ___ als ich dachte.", h: "teuer", a: ["teurer"], en: "That's more expensive than I thought.", why: "teuer → teurer (drops an e)." },
+    { t: "gap", q: "Im Winter sind die Tage ___.", h: "kurz", a: ["kürzer"], en: "In winter the days are shorter.", why: "kurz → kürzer (umlaut)." },
+    { t: "mc", q: "Dieses Handy ist ___ als mein altes.", o: ["besser", "guter", "mehr gut"], en: "This phone is better than my old one.", why: "gut → besser." },
+    { t: "mc", q: "Die Zugspitze ist der ___ Berg in Deutschland.", o: ["höchste", "hochste", "höhere"], en: "The Zugspitze is the highest mountain in Germany.", why: "hoch → höchst- + ending -e." },
+    { t: "mc", q: "Ich arbeite ___ als du.", o: ["mehr", "vieler", "mehrer"], en: "I work more than you.", why: "viel → mehr." },
+    { t: "mc", q: "Mein Auto ist nicht so schnell ___ dein Auto.", o: ["wie", "als", "dass"], en: "My car isn't as fast as your car.", why: "so … wie." },
+    { t: "mc", q: "Im Juli ist es am ___.", o: ["wärmsten", "warmsten", "wärmesten"], en: "It's warmest in July.", why: "warm → am wärmsten." },
+    { t: "mc", q: "Anna ist ___ als ihre Schwester.", o: ["älter", "alter", "mehr alt"], en: "Anna is older than her sister.", why: "alt → älter." },
+    { t: "mc", q: "Welcher Weg ist ___?", o: ["kürzer", "kurzer", "kürzerer"], en: "Which way is shorter?", why: "After the verb: no extra ending." },
+    { t: "mc", q: "Das ist das ___ Restaurant der Stadt.", o: ["beste", "besten", "gute"], en: "That's the best restaurant in the city.", why: "das + Nom → best- + -e." },
+    { t: "sb", s: "Der Zug ist schneller als der Bus.", en: "The train is faster than the bus.", why: "-er + als." },
+    { t: "sb", s: "Mein Zimmer ist nicht so groß wie dein Zimmer.", en: "My room isn't as big as your room.", why: "nicht so … wie." },
+    { t: "sb", s: "Im Sommer trinke ich am liebsten Wasser.", alt: ["Ich trinke im Sommer am liebsten Wasser.", "Am liebsten trinke ich im Sommer Wasser."], en: "In summer I like drinking water best.", why: "am liebsten." },
+    { t: "sb", s: "Barbados ist wärmer als Deutschland.", cap: 1, en: "Barbados is warmer than Germany.", why: "warm → wärmer." },
+    { t: "sb", s: "Wer ist der älteste Mensch in deiner Familie?", en: "Who is the oldest person in your family?", why: "der ältest- + -e." },
+    { t: "sb", s: "Hier ist das Essen billiger als in der Stadt.", alt: ["Das Essen ist hier billiger als in der Stadt."], en: "The food here is cheaper than in town.", why: "billig → billiger." },
+    { t: "uf", q: "Tom ist 1,80 m. Ben ist 1,90 m.", task: "Vergleiche (groß)", a: ["Ben ist größer als Tom.", "Tom ist kleiner als Ben."], en: "Ben is taller than Tom.", why: "groß → größer + als." },
+    { t: "uf", q: "Der Kaffee kostet 3 €. Der Tee kostet 2 €.", task: "Vergleiche (teuer)", a: ["Der Kaffee ist teurer als der Tee."], en: "The coffee is more expensive than the tea.", why: "teuer → teurer." },
+    { t: "uf", q: "Ich bin 30. Mein Bruder ist auch 30.", task: "Vergleiche (so … wie, alt)", a: ["Ich bin so alt wie mein Bruder.", "Mein Bruder ist so alt wie ich."], en: "I'm as old as my brother.", why: "Equal → so alt wie." },
+    { t: "uf", q: "Ich trinke Tee. Kaffee trinke ich aber noch mehr.", task: "Vergleiche (gern)", a: ["Ich trinke lieber Kaffee als Tee.", "Ich trinke Kaffee lieber als Tee.", "Kaffee trinke ich lieber als Tee."], en: "I prefer coffee to tea.", why: "gern → lieber + als." },
+    { t: "uf", q: "Lisa: 12 Sek. – Max: 11 Sek. – Jan: 10 Sek.", task: "Wer läuft am schnellsten? (Superlativ)", a: ["Jan läuft am schnellsten.", "Jan ist am schnellsten."], en: "Jan runs the fastest.", why: "am schnellsten." },
+    { t: "uf", q: "Montag: 15 °C. Dienstag: 20 °C.", task: "Vergleiche (warm)", a: ["Am Dienstag ist es wärmer als am Montag.", "Am Dienstag war es wärmer als am Montag.", "Dienstag ist es wärmer als Montag."], en: "On Tuesday it's warmer than on Monday.", why: "warm → wärmer + als." }
+  ]
+},
+{
+  id: "konjunktiv",
+  title: "Konjunktiv II: höflich und Wünsche",
+  sub: "hätte, wäre, würde, könnte",
+  card: {
+    intro: "Konjunktiv II makes requests polite and expresses wishes and unreal situations.",
+    tables: [
+      { h: ["", "werden", "haben", "sein", "können"], r: [
+        ["ich", "würde", "hätte", "wäre", "könnte"],
+        ["du", "würdest", "hättest", "wärst", "könntest"],
+        ["er/sie/es", "würde", "hätte", "wäre", "könnte"],
+        ["wir", "würden", "hätten", "wären", "könnten"],
+        ["ihr", "würdet", "hättet", "wärt", "könntet"],
+        ["sie/Sie", "würden", "hätten", "wären", "könnten"]
+      ]}
+    ],
+    points: [
+      "Polite requests: <b>Könnten</b> Sie …? <b>Würden</b> Sie …? <b>Könntest</b> du …?",
+      "Wishes: Ich <b>hätte</b> gern einen Kaffee. Ich <b>würde</b> gern reisen.",
+      "Advice: Du <b>solltest</b> mehr schlafen. An deiner Stelle <b>würde</b> ich …",
+      "Unreal: Wenn ich Zeit <b>hätte</b>, <b>würde</b> ich kommen.",
+      "The umlaut is the signal: konnte (could, past) ≠ könnte (could, would)."
+    ],
+    examples: [
+      ["Könnten Sie mir helfen?", "Could you help me?"],
+      ["Ich hätte gern ein Wasser.", "I'd like a water."],
+      ["Wenn ich reich wäre, würde ich reisen.", "If I were rich, I'd travel."]
+    ]
+  },
+  items: [
+    { t: "gap", q: "___ Sie mir bitte helfen?", h: "können", a: ["könnten"], en: "Could you please help me?", why: "Polite request with Sie → Könnten." },
+    { t: "gap", q: "Ich ___ gern einen Kaffee.", h: "haben", a: ["hätte"], en: "I'd like a coffee.", why: "Ordering politely: ich hätte gern." },
+    { t: "gap", q: "Ich ___ gern nach Japan reisen.", h: "werden", a: ["würde"], en: "I'd like to travel to Japan.", why: "Wish: würde gern + infinitive." },
+    { t: "gap", q: "Das ___ schön!", h: "sein", a: ["wäre"], en: "That would be nice!", why: "sein → wäre." },
+    { t: "gap", q: "___ du mir das Salz geben?", h: "können", a: ["könntest"], en: "Could you pass me the salt?", why: "du → könntest." },
+    { t: "gap", q: "Wenn ich mehr Zeit ___, würde ich mehr lesen.", h: "haben", a: ["hätte"], en: "If I had more time, I'd read more.", why: "Unreal condition: wenn … hätte." },
+    { t: "gap", q: "Du ___ mehr schlafen.", h: "sollen", a: ["solltest"], en: "You should sleep more.", why: "Advice: du solltest." },
+    { t: "gap", q: "Wir ___ gern ein Doppelzimmer.", h: "haben", a: ["hätten"], en: "We'd like a double room.", why: "wir → hätten." },
+    { t: "mc", q: "___ Sie bitte das Fenster schließen?", o: ["Würden", "Werden", "Wurden"], en: "Would you please close the window?", why: "Polite: Würden (with umlaut)." },
+    { t: "mc", q: "An deiner Stelle ___ ich zum Arzt gehen.", o: ["würde", "werde", "wurde"], en: "If I were you, I'd go to the doctor.", why: "Advice: an deiner Stelle würde ich …" },
+    { t: "mc", q: "Wenn ich reich ___, würde ich ein Haus kaufen.", o: ["wäre", "war", "bin"], en: "If I were rich, I'd buy a house.", why: "Unreal → wäre." },
+    { t: "mc", q: "Ich ___ gern ein Stück Kuchen, bitte.", o: ["hätte", "hatte", "habe"], en: "I'd like a piece of cake, please.", why: "Ordering: hätte gern. hatte = had (past)." },
+    { t: "mc", q: "Es ___ toll, wenn du kommen könntest.", o: ["wäre", "war", "ist"], en: "It would be great if you could come.", why: "Unreal/wish → wäre." },
+    { t: "mc", q: "___ ich kurz Ihr Telefon benutzen?", o: ["Könnte", "Konnte", "Könnten"], en: "Could I use your phone for a moment?", why: "ich → könnte. Konnte is past." },
+    { t: "mc", q: "Du ___ mal Urlaub machen.", o: ["solltest", "solltet", "sollte"], en: "You should take a holiday.", why: "du → solltest." },
+    { t: "mc", q: "Was ___ du an meiner Stelle machen?", o: ["würdest", "wirst", "wurdest"], en: "What would you do in my place?", why: "du → würdest." },
+    { t: "sb", s: "Könnten Sie mir bitte die Rechnung bringen?", en: "Could you please bring me the bill?", why: "Könnten first, infinitive last." },
+    { t: "sb", s: "Ich hätte gern ein Glas Wasser.", en: "I'd like a glass of water.", why: "hätte gern + object." },
+    { t: "sb", s: "Wenn ich Zeit hätte , würde ich dich besuchen.", alt: ["Ich würde dich besuchen , wenn ich Zeit hätte."], en: "If I had time, I'd visit you.", why: "wenn … hätte, würde … infinitive." },
+    { t: "sb", s: "Würdest du mir bitte helfen?", en: "Would you please help me?", why: "Würdest first, infinitive last." },
+    { t: "sb", s: "Am liebsten würde ich jetzt schlafen.", alt: ["Ich würde jetzt am liebsten schlafen.", "Ich würde am liebsten jetzt schlafen."], en: "Most of all I'd like to sleep now.", why: "würde in position 2, infinitive last." },
+    { t: "sb", s: "Du solltest mehr Wasser trinken.", en: "You should drink more water.", why: "solltest + infinitive at the end." },
+    { t: "uf", q: "Geben Sie mir das Buch!", task: "Höflicher: Könnten Sie …?", a: ["Könnten Sie mir das Buch geben?"], en: "Could you give me the book?", why: "Könnten + … + infinitive at the end." },
+    { t: "uf", q: "Ich will einen Tee.", task: "Höflicher: hätte gern", a: ["Ich hätte gern einen Tee.", "Ich hätte gerne einen Tee."], en: "I'd like a tea.", why: "will → hätte gern." },
+    { t: "uf", q: "Mach das Radio leiser!", task: "Höflicher: Würdest du …?", a: ["Würdest du das Radio leiser machen?"], en: "Would you turn the radio down?", why: "Würdest du … machen?" },
+    { t: "uf", q: "Ich habe keine Zeit. Ich komme nicht.", task: "Wenn ich …, würde …", a: ["Wenn ich Zeit hätte, würde ich kommen."], en: "If I had time, I'd come.", why: "wenn … hätte, würde ich + infinitive." },
+    { t: "uf", q: "Hilf mir!", task: "Höflicher: Könntest du …?", a: ["Könntest du mir helfen?"], en: "Could you help me?", why: "Könntest du … helfen?" },
+    { t: "uf", q: "Ich möchte ein Zimmer reservieren.", task: "Mit »würde gern«", a: ["Ich würde gern ein Zimmer reservieren.", "Ich würde gerne ein Zimmer reservieren."], en: "I'd like to book a room.", why: "würde gern + infinitive at the end." }
+  ]
+}
+];
+
+</script>
+<script>
+"use strict";
+(function(){
+const STORE_KEY = "a2-grammatik-v1";
+const TYPES = { gap: "Lückentext", mc: "Auswahl", sb: "Satzbau", uf: "Umformen" };
+const TYPE_HELP = { gap: "Ergänze das fehlende Wort", mc: "Wähle die richtige Form", sb: "Bau den Satz", uf: "Forme um" };
+const ICON = {
+  back: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>',
+  close: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>',
+  gear: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>',
+  speak: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M19 5a10 10 0 0 1 0 14"/></svg>',
+  undo: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7v6h6"/><path d="M21 17a9 9 0 0 0-15-6.7L3 13"/></svg>'
+};
+
+/* ---------- storage (guarded) ---------- */
+let storageOK = true;
+let state = { box: {}, miss: {}, seen: {}, settings: { autoSpeak: false, theme: "auto" } };
+function loadState(){
+  try {
+    const raw = window.localStorage.getItem(STORE_KEY);
+    if (raw) {
+      const s = JSON.parse(raw);
+      state.box = s.box || {}; state.miss = s.miss || {}; state.seen = s.seen || {};
+      state.settings = Object.assign(state.settings, s.settings || {});
+    }
+    window.localStorage.setItem(STORE_KEY + "-test", "1");
+    window.localStorage.removeItem(STORE_KEY + "-test");
+  } catch (e) { storageOK = false; }
+}
+function saveState(){
+  if (!storageOK) return;
+  try { window.localStorage.setItem(STORE_KEY, JSON.stringify(state)); }
+  catch (e) { storageOK = false; }
+}
+
+/* ---------- speech (guarded) ---------- */
+let voice = null;
+function getSynth(){
+  try { return ("speechSynthesis" in window && window.speechSynthesis) ? window.speechSynthesis : null; }
+  catch (e) { return null; }
+}
+function loadVoices(){
+  const synth = getSynth(); if (!synth) return;
+  try {
+    const vs = synth.getVoices() || [];
+    voice = vs.find(v => /^de[-_]DE/i.test(v.lang)) || vs.find(v => /^de/i.test(v.lang)) || null;
+  } catch (e) { voice = null; }
+}
+function ttsAvailable(){ return !!getSynth(); }
+function speak(text){
+  const synth = getSynth(); if (!synth || !text) return;
+  try {
+    synth.cancel();
+    const u = new SpeechSynthesisUtterance(text);
+    u.lang = "de-DE"; u.rate = 0.92;
+    if (voice) u.voice = voice;
+    synth.speak(u);
+  } catch (e) {}
+}
+(function initVoices(){
+  const synth = getSynth(); if (!synth) return;
+  loadVoices();
+  try { synth.onvoiceschanged = loadVoices; } catch (e) {}
+})();
+
+/* ---------- helpers ---------- */
+const $app = document.getElementById("app");
+const $top = document.getElementById("top");
+const $cta = document.getElementById("cta");
+function esc(s){ return String(s).replace(/[&<>"']/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c])); }
+function shuffle(a){ a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
+function key(ruleId, i){ return ruleId + ":" + i; }
+function ruleById(id){ return RULES.find(r => r.id === id); }
+function cap1(s){ return s ? s.charAt(0).toUpperCase() + s.slice(1) : s; }
+function cleanSb(s){ return s.replace(/\s+,/g, ","); }
+function fullSentence(it){
+  if (it.t === "gap") return it.q.replace("___", it.a[0]);
+  if (it.t === "mc") {
+    if (it.q.includes("___")) return it.q.replace("___", it.o[0]);
+    if (/…\s*$/.test(it.q)) return it.q.replace(/…\s*$/, it.o[0]) + ".";
+    return it.o[0];
+  }
+  if (it.t === "sb") return cleanSb(it.s);
+  return it.a[0];
+}
+function speakBtn(text){
+  if (!ttsAvailable()) return "";
+  return '<button class="say" data-say="' + esc(text) + '" aria-label="Anhören">' + ICON.speak + "</button>";
+}
+function bindSay(root){
+  root.querySelectorAll("[data-say]").forEach(b => b.addEventListener("click", e => { e.stopPropagation(); speak(b.getAttribute("data-say")); }));
+}
+
+/* ---------- answer checking ---------- */
+function norm(s, keepCommas){
+  let t = String(s).toLowerCase()
+    .replace(/[„“”"‚‘’'«»]/g, "")
+    .replace(/[–—]/g, "-")
+    .replace(/\bbitte\b/g, " ")
+    .replace(/\s*,\s*/g, keepCommas ? ", " : " ")
+    .replace(/[.!?]+\s*$/g, "")
+    .replace(/\s+/g, " ").trim();
+  return t;
+}
+function fold(s){ return s.replace(/ä|ae/g,"a").replace(/ö|oe/g,"o").replace(/ü|ue/g,"u").replace(/ß|ss/g,"s"); }
+// returns {ok, almost, tip}
+function checkText(input, answers, isSentence){
+  const raw = String(input || "").trim();
+  if (!raw) return { ok: false, empty: true };
+  for (const a of answers) if (norm(raw, true) === norm(a, true)) return { ok: true };
+  for (const a of answers) if (norm(raw, false) === norm(a, false)) {
+    return { ok: true, tip: isSentence ? "Achte auf das Komma vor dem Nebensatz." : "" };
+  }
+  for (const a of answers) if (fold(norm(raw, false)) === fold(norm(a, false))) return { ok: false, almost: true, tip: "Fast! Achte auf ä, ö, ü und ß." };
+  return { ok: false };
+}
+
+/* ---------- mastery ---------- */
+function boxOf(k){ return state.box[k] || 0; }
+function ruleMastery(r){
+  let sum = 0, seen = 0;
+  r.items.forEach((_, i) => { const k = key(r.id, i); sum += boxOf(k); if (state.seen[k]) seen++; });
+  return { pct: Math.round(100 * sum / (5 * r.items.length)), seen };
+}
+function levelLabel(m){
+  if (!m.seen) return "Neu";
+  if (m.pct < 30) return "Anfang";
+  if (m.pct < 60) return "Unterwegs";
+  if (m.pct < 90) return "Sicher";
+  return "Gemeistert";
+}
+function overall(){
+  let sum = 0, n = 0;
+  RULES.forEach(r => r.items.forEach((_, i) => { sum += boxOf(key(r.id, i)); n++; }));
+  return Math.round(100 * sum / (5 * n));
+}
+function missKeys(){ return Object.keys(state.miss).filter(k => { const [rid, i] = k.split(":"); const r = ruleById(rid); return r && r.items[+i]; }); }
+function record(k, correct){
+  state.seen[k] = (state.seen[k] || 0) + 1;
+  if (correct) { state.box[k] = Math.min(5, boxOf(k) + 1); delete state.miss[k]; }
+  else { state.box[k] = 0; state.miss[k] = 1; }
+  saveState();
+}
+
+/* ---------- navigation ---------- */
+let view = { name: "home" };
+let session = null;
+function go(v, replace){
+  view = v;
+  try { if (replace) history.replaceState(v, ""); else history.pushState(v, ""); } catch (e) {}
+  render();
+}
+window.addEventListener("popstate", e => {
+  const v = e.state || { name: "home" };
+  if (v.name === "session" && !session) { view = { name: "home" }; }
+  else view = v;
+  render();
+});
+function topBar(title, sub, left, right){
+  $top.innerHTML = (left || "") + '<h1>' + title + (sub ? "<small>" + sub + "</small>" : "") + "</h1>" + (right || "");
+}
+function backBtn(){ return '<button class="icon-btn" id="backBtn" aria-label="Zurück">' + ICON.back + "</button>"; }
+function bindBack(){ const b = document.getElementById("backBtn"); if (b) b.onclick = () => history.back(); }
+function setCTA(html){ $cta.innerHTML = html ? '<div class="sticky-cta"><div class="in">' + html + "</div></div>" : ""; }
+function applyTheme(){
+  const t = state.settings.theme;
+  if (t === "light" || t === "dark") document.documentElement.setAttribute("data-theme", t);
+  else document.documentElement.removeAttribute("data-theme");
+}
+
+function render(){
+  window.scrollTo(0, 0);
+  setCTA("");
+  ({ home: renderHome, rule: renderRule, setup: renderSetup, session: renderSession, results: renderResults, settings: renderSettings }[view.name] || renderHome)();
+}
+
+/* ---------- home ---------- */
+function renderHome(){
+  const total = RULES.reduce((n, r) => n + r.items.length, 0);
+  topBar("A2 Grammatik", RULES.length + " Regeln · " + total + " Übungen", "", '<button class="icon-btn" id="gear" aria-label="Einstellungen">' + ICON.gear + "</button>");
+  document.getElementById("gear").onclick = () => go({ name: "settings" });
+  const ov = overall(), mk = missKeys().length;
+  let h = "";
+  if (!storageOK) h += '<div class="warn">Dein Fortschritt kann auf diesem Gerät nicht gespeichert werden. Er gilt nur, solange die App offen ist.</div>';
+  h += '<section class="hero"><div class="big">' + ov + '%</div><div class="lbl">Gesamtfortschritt</div><div class="bar"><i style="width:' + ov + '%"></i></div>' +
+    '<div class="hero-actions"><button class="btn btn-amber" id="mix">Gemischt üben</button>' +
+    '<button class="btn btn-ghost" id="miss"' + (mk ? "" : " disabled") + ">Fehler (" + mk + ")</button></div></section>";
+  h += '<div class="sec">Regeln</div><div class="rules">';
+  RULES.forEach((r, idx) => {
+    const m = ruleMastery(r);
+    h += '<button class="rule" data-rule="' + r.id + '"><div class="num">' + (idx + 1) + '</div><div class="meta"><div class="t">' + esc(r.title) + '</div><div class="s">' + esc(r.sub) + '</div><div class="mbar"><i class="' + (m.pct >= 90 ? "gold" : "") + '" style="width:' + m.pct + '%"></i></div></div><div class="pct">' + m.pct + "%<span>" + levelLabel(m) + "</span></div></button>";
+  });
+  h += "</div>";
+  $app.innerHTML = '<div class="fade">' + h + "</div>";
+  $app.querySelectorAll("[data-rule]").forEach(b => b.onclick = () => go({ name: "rule", id: b.dataset.rule }));
+  document.getElementById("mix").onclick = () => go({ name: "setup", rules: RULES.map(r => r.id), mix: true });
+  document.getElementById("miss").onclick = () => { if (mk) startSession(missKeys(), "Fehler üben"); };
+}
+
+/* ---------- rule card ---------- */
+function renderRule(){
+  const r = ruleById(view.id); if (!r) return go({ name: "home" }, true);
+  const idx = RULES.indexOf(r) + 1;
+  topBar(esc(r.title), "Regel " + idx + " · " + esc(r.sub), backBtn());
+  bindBack();
+  const c = r.card, m = ruleMastery(r);
+  let h = '<div class="card"><p class="intro">' + c.intro + "</p>";
+  c.tables.forEach(t => {
+    h += '<div class="tbl"><table><thead><tr>' + t.h.map(x => "<th>" + x + "</th>").join("") + "</tr></thead><tbody>" +
+      t.r.map(row => "<tr>" + row.map(x => "<td" + (x.replace(/<[^>]+>/g,"").length < 14 ? ' class="nw"' : "") + ">" + x + "</td>").join("") + "</tr>").join("") + "</tbody></table></div>";
+  });
+  h += "</div>";
+  h += '<div class="card"><ul class="pts">' + c.points.map(p => "<li>" + p + "</li>").join("") + "</ul></div>";
+  h += '<div class="sec">Beispiele</div><div class="card">' + c.examples.map(e => '<div class="ex"><div><div class="de">' + esc(e[0]) + '</div><div class="en">' + esc(e[1]) + "</div></div>" + speakBtn(e[0]) + "</div>").join("") + "</div>";
+  h += '<div class="sec">Dein Stand</div><div class="card"><div class="row"><div>' + levelLabel(m) + " · " + m.seen + " von " + r.items.length + ' geübt</div><div class="pct">' + m.pct + '%</div></div><div class="mbar"><i style="width:' + m.pct + '%"></i></div></div>';
+  $app.innerHTML = '<div class="fade">' + h + "</div>";
+  bindSay($app);
+  setCTA('<button class="btn btn-primary" id="go">Diese Regel üben</button>');
+  document.getElementById("go").onclick = () => go({ name: "setup", rules: [r.id], mix: false });
+}
+
+/* ---------- setup ---------- */
+let setup = { types: { gap: true, mc: true, sb: true, uf: true }, len: 10 };
+function renderSetup(){
+  const single = !view.mix;
+  const sel = new Set(view.rules || []);
+  topBar(single ? "Übung einstellen" : "Gemischt üben", single ? esc(ruleById(view.rules[0]).title) : "Wähle Regeln und Übungstypen", backBtn());
+  bindBack();
+  let h = "";
+  if (!single) {
+    h += '<div class="row"><div class="sec" style="margin-top:6px">Regeln</div><div><button class="linkbtn" id="all">Alle</button> · <button class="linkbtn" id="none">Keine</button></div></div><div class="pick">';
+    RULES.forEach(r => {
+      h += '<label><input type="checkbox" data-r="' + r.id + '"' + (sel.has(r.id) ? " checked" : "") + "><span>" + esc(r.title) + '</span><span class="p">' + ruleMastery(r).pct + "%</span></label>";
+    });
+    h += "</div>";
+  }
+  h += '<div class="sec">Übungstypen</div><div class="chips">' + Object.keys(TYPES).map(t => '<button class="chip' + (setup.types[t] ? " on" : "") + '" data-t="' + t + '">' + TYPES[t] + "</button>").join("") + "</div>";
+  h += '<div class="sec">Länge</div><div class="seg">' + [10, 20, 0].map(n => '<button data-n="' + n + '" class="' + (setup.len === n ? "on" : "") + '">' + (n ? n + " Fragen" : "Alle") + "</button>").join("") + "</div>";
+  h += '<p class="empty-note" id="avail"></p>';
+  $app.innerHTML = '<div class="fade">' + h + "</div>";
+  setCTA('<button class="btn btn-primary" id="start">Los geht’s</button>');
+  const $start = document.getElementById("start"), $avail = document.getElementById("avail");
+  function chosen(){ return single ? view.rules : Array.from($app.querySelectorAll("[data-r]")).filter(x => x.checked).map(x => x.dataset.r); }
+  function pool(){
+    const out = [];
+    chosen().forEach(id => { const r = ruleById(id); r.items.forEach((it, i) => { if (setup.types[it.t]) out.push(key(id, i)); }); });
+    return out;
+  }
+  function refresh(){
+    const p = pool(), n = setup.len ? Math.min(setup.len, p.length) : p.length;
+    $avail.textContent = p.length ? n + " von " + p.length + " passenden Übungen" : "Wähle mindestens eine Regel und einen Übungstyp.";
+    $start.disabled = !p.length;
+  }
+  $app.querySelectorAll("[data-t]").forEach(b => b.onclick = () => { setup.types[b.dataset.t] = !setup.types[b.dataset.t]; b.classList.toggle("on"); refresh(); });
+  $app.querySelectorAll("[data-n]").forEach(b => b.onclick = () => { setup.len = +b.dataset.n; $app.querySelectorAll("[data-n]").forEach(x => x.classList.toggle("on", x === b)); refresh(); });
+  $app.querySelectorAll("[data-r]").forEach(c => c.onchange = () => { view.rules = chosen(); try { history.replaceState(view, ""); } catch (e) {} refresh(); });
+  if (!single) {
+    document.getElementById("all").onclick = () => { $app.querySelectorAll("[data-r]").forEach(c => c.checked = true); view.rules = chosen(); refresh(); };
+    document.getElementById("none").onclick = () => { $app.querySelectorAll("[data-r]").forEach(c => c.checked = false); view.rules = chosen(); refresh(); };
+  }
+  $start.onclick = () => {
+    const p = pool(); if (!p.length) return;
+    // weakest first, random within the same box, then shuffle the chosen set
+    const ranked = shuffle(p).sort((a, b) => boxOf(a) - boxOf(b));
+    const pick = setup.len ? ranked.slice(0, setup.len) : ranked;
+    const label = single ? ruleById(view.rules[0]).title : "Gemischt";
+    startSession(shuffle(pick), label);
+  };
+  refresh();
+}
+
+/* ---------- session ---------- */
+function startSession(keys, label){
+  const queue = keys.map(k => ({ k, retry: 0 }));
+  session = { label, queue, pos: 0, total: keys.length, done: 0, correct: 0, missed: [], answered: false, cur: null };
+  go({ name: "session" });
+}
+function itemOf(k){ const [rid, i] = k.split(":"); const r = ruleById(rid); return { r, it: r.items[+i] }; }
+
+function renderSession(){
+  if (!session) return go({ name: "home" }, true);
+  if (session.pos >= session.queue.length) return go({ name: "results" }, true);
+  const entry = session.queue[session.pos];
+  const { r, it } = itemOf(entry.k);
+  session.answered = false;
+  const pct = Math.round(100 * session.done / session.total);
+  $top.innerHTML = '<button class="icon-btn" id="quit" aria-label="Beenden">' + ICON.close + '</button><div class="prog"><i style="width:' + pct + '%"></i></div><div class="count">' + Math.min(session.done + 1, session.total) + " / " + session.total + "</div>";
+  document.getElementById("quit").onclick = () => { if (session.done === 0 || confirm("Übung beenden? Dein Fortschritt bis jetzt ist gespeichert.")) { session.done ? go({ name: "results" }, true) : (session = null, history.back()); } };
+  let h = '<div class="fade"><span class="tag">' + esc(r.title) + "</span>" + (entry.retry ? ' <span class="tag" style="background:var(--amber-soft);color:var(--amber-ink)">Nochmal</span>' : "");
+  h += '<div class="kind">' + TYPES[it.t] + " · " + TYPE_HELP[it.t] + "</div>";
+  if (it.t === "gap") {
+    const parts = it.q.split("___");
+    h += '<p class="q">' + esc(parts[0]) + '<input class="gapin" id="gin" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" aria-label="Antwort">' + esc(parts[1]) + "</p>";
+    if (it.h) h += '<span class="hint">(' + esc(it.h) + ")</span>";
+    h += keysRow();
+  } else if (it.t === "mc") {
+    h += '<p class="q">' + esc(it.q).replace("___", '<span class="blank">&nbsp;</span>') + "</p>";
+    if (it.h) h += '<span class="hint">(' + esc(it.h) + ")</span>";
+    session.opts = shuffle(it.o);
+    h += '<div class="opts">' + session.opts.map((o, i) => '<button class="opt" data-o="' + i + '">' + esc(o) + "</button>").join("") + "</div>";
+  } else if (it.t === "sb") {
+    const end = (it.s.match(/[.?!]$/) || ["."])[0];
+    let toks = it.s.replace(/[.?!]$/, "").split(/\s+/);
+    if (!it.cap) toks[0] = toks[0].charAt(0).toLowerCase() + toks[0].slice(1);
+    let order = shuffle(toks.map((_, i) => i));
+    if (order.every((v, i) => v === i) && toks.length > 1) order = order.reverse();
+    session.sb = { toks, order, built: [], end };
+    h += '<div class="build empty" id="build"></div><div class="row" style="margin-top:6px"><span class="hint">Satzende: ' + esc(end) + '</span><button class="linkbtn" id="clr">' + "Zurücksetzen</button></div>";
+    h += '<div class="pool" id="pool"></div>';
+  } else {
+    h += '<div class="src">' + esc(it.q) + "</div><div class=\"task\">" + esc(it.task) + "</div>";
+    h += '<textarea class="uf" id="uin" autocomplete="off" autocapitalize="sentences" spellcheck="false" placeholder="Schreib den ganzen Satz …" aria-label="Antwort"></textarea>';
+    h += keysRow();
+  }
+  h += '<div id="fb"></div></div>';
+  $app.innerHTML = h;
+  if (it.t !== "mc") setCTA('<button class="btn btn-primary" id="check">Prüfen</button>');
+  wireItem(entry, r, it);
+}
+function keysRow(){ return '<div class="keys">' + ["ä", "ö", "ü", "ß"].map(c => '<button data-k="' + c + '" type="button">' + c + "</button>").join("") + "</div>"; }
+function wireItem(entry, r, it){
+  const check = document.getElementById("check");
+  const input = document.getElementById("gin") || document.getElementById("uin");
+  $app.querySelectorAll("[data-k]").forEach(b => {
+    b.addEventListener("mousedown", e => e.preventDefault());
+    b.onclick = () => {
+      if (!input || session.answered) return;
+      const s = input.selectionStart ?? input.value.length, e2 = input.selectionEnd ?? input.value.length;
+      input.value = input.value.slice(0, s) + b.dataset.k + input.value.slice(e2);
+      input.focus(); try { input.setSelectionRange(s + 1, s + 1); } catch (e) {}
+    };
+  });
+  if (input) {
+    setTimeout(() => { try { input.focus({ preventScroll: true }); } catch (e) {} }, 60);
+    input.addEventListener("keydown", e => {
+      if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); session.answered ? next() : check.click(); }
+    });
+  }
+  if (it.t === "gap") check.onclick = () => {
+    const res = checkText(input.value, it.a, false);
+    if (res.empty) return input.focus();
+    input.disabled = true;
+    finish(entry, r, it, res, input.value.trim());
+  };
+  if (it.t === "uf") check.onclick = () => {
+    const res = checkText(input.value, it.a, true);
+    if (res.empty) return input.focus();
+    input.disabled = true;
+    finish(entry, r, it, res, input.value.trim());
+  };
+  if (it.t === "mc") $app.querySelectorAll("[data-o]").forEach(b => b.onclick = () => {
+    if (session.answered) return;
+    const chosen = session.opts[+b.dataset.o];
+    const ok = chosen === it.o[0];
+    $app.querySelectorAll("[data-o]").forEach(x => {
+      x.disabled = true;
+      const val = session.opts[+x.dataset.o];
+      if (val === it.o[0]) x.classList.add("right");
+      else if (x === b) x.classList.add("wrong");
+    });
+    finish(entry, r, it, { ok }, chosen);
+  });
+  if (it.t === "sb") {
+    const $b = document.getElementById("build"), $p = document.getElementById("pool");
+    const sb = session.sb;
+    function draw(){
+      $b.classList.toggle("empty", !sb.built.length);
+      $b.innerHTML = sb.built.map((ti, pos) => '<button class="tok' + (sb.toks[ti] === "," ? " comma" : "") + '" data-bpos="' + pos + '">' + esc(sb.toks[ti]) + "</button>").join("");
+      const used = new Set(sb.built);
+      $p.innerHTML = sb.order.filter(ti => !used.has(ti)).map(ti => '<button class="tok' + (sb.toks[ti] === "," ? " comma" : "") + '" data-ti="' + ti + '">' + esc(sb.toks[ti]) + "</button>").join("");
+      $p.querySelectorAll("[data-ti]").forEach(x => x.onclick = () => { if (session.answered) return; sb.built.push(+x.dataset.ti); draw(); });
+      $b.querySelectorAll("[data-bpos]").forEach(x => x.onclick = () => { if (session.answered) return; sb.built.splice(+x.dataset.bpos, 1); draw(); });
+      check.disabled = sb.built.length !== sb.toks.length;
+    }
+    document.getElementById("clr").onclick = () => { if (session.answered) return; sb.built = []; draw(); };
+    draw();
+    check.onclick = () => {
+      if (sb.built.length !== sb.toks.length) return;
+      const built = cleanSb(sb.built.map(ti => sb.toks[ti]).join(" "));
+      const targets = [it.s].concat(it.alt || []).map(x => cleanSb(x).replace(/[.?!]$/, "").toLowerCase());
+      const ok = targets.includes(built.toLowerCase());
+      finish(entry, r, it, { ok }, cap1(built) + sb.end);
+    };
+  }
+}
+function finish(entry, r, it, res, given){
+  session.answered = true;
+  const full = fullSentence(it);
+  if (!entry.retry) {
+    record(entry.k, res.ok);
+    session.done++;
+    if (res.ok) session.correct++;
+    else session.missed.push(entry.k);
+  }
+  if (!res.ok && entry.retry < 3) {
+    const at = Math.min(session.queue.length, session.pos + 4);
+    session.queue.splice(at, 0, { k: entry.k, retry: entry.retry + 1 });
+  }
+  const cls = res.ok ? "ok" : (res.almost ? "almost" : "no");
+  const head = res.ok ? (entry.retry ? "Jetzt richtig!" : "Richtig!") : (res.almost ? "Fast!" : "Nicht ganz");
+  let correctTxt = full;
+  if (it.t === "gap") correctTxt = it.q.replace("___", "[" + it.a[0] + "]");
+  let h = '<div class="fb ' + cls + ' fade"><h3>' + head + "</h3>";
+  h += '<div class="ans"><div>' + esc(correctTxt).replace(/\[([^\]]+)\]/, "<b>$1</b>") + "</div>" + speakBtn(full) + "</div>";
+  if (!res.ok && given) h += '<div class="yours">Deine Antwort: <s>' + esc(given) + "</s></div>";
+  if (res.ok && it.t === "uf" && it.a.length > 1 && norm(given, false) !== norm(it.a[0], false)) h += '<div class="yours">Auch richtig: ' + esc(it.a[0]) + "</div>";
+  if (res.tip) h += '<div class="tip">' + esc(res.tip) + "</div>";
+  h += '<div class="why">' + esc(it.why) + '</div><div class="en">' + esc(it.en) + "</div></div>";
+  document.getElementById("fb").innerHTML = h;
+  bindSay(document.getElementById("fb"));
+  const pct = Math.round(100 * session.done / session.total);
+  const bar = $top.querySelector(".prog i"); if (bar) bar.style.width = pct + "%";
+  setCTA('<button class="btn btn-primary" id="nextBtn">Weiter</button>');
+  const nb = document.getElementById("nextBtn");
+  nb.onclick = next;
+  if (state.settings.autoSpeak) speak(full);
+  setTimeout(() => {
+    const fb = document.getElementById("fb");
+    if (fb && fb.getBoundingClientRect().bottom > window.innerHeight - 90) fb.scrollIntoView({ behavior: "smooth", block: "end" });
+    if (it.t === "mc" || it.t === "sb") try { nb.focus({ preventScroll: true }); } catch (e) {}
+  }, 50);
+}
+function next(){ if (!session) return; session.pos++; renderSession(); }
+document.addEventListener("keydown", e => {
+  if (view.name === "session" && session && session.answered && e.key === "Enter" && !(e.target && e.target.id === "uin") && !(e.target && e.target.id === "gin")) { e.preventDefault(); next(); }
+});
+
+/* ---------- results ---------- */
+function renderResults(){
+  if (!session) return go({ name: "home" }, true);
+  topBar("Ergebnis", esc(session.label), "");
+  const s = session, pct = s.done ? Math.round(100 * s.correct / s.done) : 0;
+  let h = '<div class="card fade" style="text-align:center"><div class="res-big">' + s.correct + " / " + s.done + '</div><div style="color:var(--ink-2);margin-top:6px">' + pct + "% beim ersten Versuch richtig</div></div>";
+  const missed = Array.from(new Set(s.missed));
+  if (missed.length) {
+    h += '<div class="sec">Zum Wiederholen</div><div class="card">' + missed.map(k => { const { r, it } = itemOf(k); return '<div class="miss"><div class="a">' + esc(fullSentence(it)) + '</div><div class="w">' + esc(r.title) + " · " + esc(it.why) + "</div></div>"; }).join("") + "</div>";
+  } else if (s.done) h += '<p class="empty-note">Keine Fehler. Stark!</p>';
+  h += '<div class="actions">' + (missed.length ? '<button class="btn btn-primary" id="again">Diese Fehler nochmal</button>' : "") + '<button class="btn btn-line" id="home">Zur Übersicht</button></div>';
+  $app.innerHTML = h;
+  const again = document.getElementById("again");
+  if (again) again.onclick = () => startSession(shuffle(missed), "Fehler nochmal");
+  document.getElementById("home").onclick = () => { session = null; go({ name: "home" }); };
+}
+
+/* ---------- settings ---------- */
+function renderSettings(){
+  topBar("Einstellungen", "", backBtn());
+  bindBack();
+  const tts = ttsAvailable();
+  let h = '<div class="card"><div class="toggle"><div>Antwort vorlesen<small>' + (tts ? "Liest den richtigen Satz nach jeder Antwort vor." : "Vorlesen ist auf diesem Gerät nicht verfügbar.") + '</small></div><label class="sw"><input type="checkbox" id="auto"' + (state.settings.autoSpeak && tts ? " checked" : "") + (tts ? "" : " disabled") + "><span></span></label></div>";
+  h += '<div class="toggle"><div>Design<small>Hell, dunkel oder wie das Gerät</small></div></div><div class="seg" id="theme">' + [["auto", "Auto"], ["light", "Hell"], ["dark", "Dunkel"]].map(t => '<button data-th="' + t[0] + '" class="' + (state.settings.theme === t[0] ? "on" : "") + '">' + t[1] + "</button>").join("") + "</div></div>";
+  h += '<div class="card"><div class="toggle"><div>Fortschritt zurücksetzen<small>Löscht Stand und Fehlerliste für alle Regeln.</small></div></div><button class="btn btn-line" id="reset" style="color:var(--bad)">Zurücksetzen</button></div>';
+  if (!storageOK) h += '<div class="warn">Speichern ist auf diesem Gerät gerade nicht möglich.</div>';
+  $app.innerHTML = '<div class="fade">' + h + "</div>";
+  const a = document.getElementById("auto");
+  if (a) a.onchange = () => { state.settings.autoSpeak = a.checked; saveState(); if (a.checked) speak("Gut gemacht!"); };
+  $app.querySelectorAll("[data-th]").forEach(b => b.onclick = () => { state.settings.theme = b.dataset.th; saveState(); applyTheme(); $app.querySelectorAll("[data-th]").forEach(x => x.classList.toggle("on", x === b)); });
+  document.getElementById("reset").onclick = () => {
+    if (!confirm("Wirklich den ganzen Fortschritt löschen?")) return;
+    state.box = {}; state.miss = {}; state.seen = {}; saveState(); go({ name: "home" });
+  };
+}
+
+/* ---------- boot ---------- */
+loadState();
+applyTheme();
+try { history.replaceState({ name: "home" }, ""); } catch (e) {}
+render();
+if ("serviceWorker" in navigator && /^https?:$/.test(location.protocol)) {
+  window.addEventListener("load", () => { navigator.serviceWorker.register("sw.js").catch(() => {}); });
+}
+// test hook
+window.__a2 = { RULES, checkText, norm, state: () => state, cur: () => session && session.queue[session.pos] };
+})();
+</script>
+</body>
+</html>
