@@ -133,7 +133,7 @@ textarea.uf:focus{border-color:var(--petrol)}
 .keys{display:flex;gap:8px;margin:10px 0 4px}
 .keys button{flex:1;border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:9px 0;font-weight:700;font-size:18px}
 .build{min-height:64px;border:1.5px dashed var(--line);border-radius:14px;padding:10px;display:flex;flex-wrap:wrap;gap:8px;align-content:flex-start;background:var(--surface);margin-top:6px}
-.build.empty:before{content:"Tippe die Wörter in der richtigen Reihenfolge";color:var(--ink-2);font-size:14.5px;padding:6px}
+.build.empty:before{content:attr(data-ph);color:var(--ink-2);font-size:14.5px;padding:6px}
 .pool{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
 .tok{border:1.5px solid var(--line);background:var(--surface);border-radius:11px;padding:9px 13px;font-weight:650;font-size:17px;box-shadow:var(--shadow)}
 .build .tok:first-child{text-transform:capitalize}
@@ -168,6 +168,11 @@ textarea.uf:focus{border-color:var(--petrol)}
 .sw input:checked+span{background:var(--petrol)}
 .sw input:checked+span:before{transform:translateX(22px)}
 .sw input:disabled+span{opacity:.5}
+.lang{flex:none;display:flex;border:1px solid var(--line);background:var(--surface);border-radius:12px;padding:3px;height:42px;align-items:stretch}
+.lang span{display:grid;place-items:center;min-width:34px;border-radius:9px;font-weight:700;font-size:13.5px;color:var(--ink-2);letter-spacing:.03em}
+.lang span.on{background:var(--petrol);color:#fff}
+:root[data-theme="dark"] .lang span.on{color:#06252b}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .lang span.on{color:#06252b}}
 .empty-note{color:var(--ink-2);font-size:15px;text-align:center;padding:16px}
 .fade{animation:fade .18s ease-out}
 @keyframes fade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
@@ -896,8 +901,95 @@ const RULES = [
 "use strict";
 (function(){
 const STORE_KEY = "a2-grammatik-v1";
-const TYPES = { gap: "Lückentext", mc: "Auswahl", sb: "Satzbau", uf: "Umformen" };
-const TYPE_HELP = { gap: "Ergänze das fehlende Wort", mc: "Wähle die richtige Form", sb: "Bau den Satz", uf: "Forme um" };
+const I18N = {
+  de: {
+    t_gap: "Lückentext", t_mc: "Auswahl", t_sb: "Satzbau", t_uf: "Umformen",
+    h_gap: "Ergänze das fehlende Wort", h_mc: "Wähle die richtige Form", h_sb: "Bau den Satz", h_uf: "Forme um",
+    tipComma: "Achte auf das Komma vor dem Nebensatz.", tipUml: "Fast! Achte auf ä, ö, ü und ß.",
+    lvNew: "Neu", lvStart: "Anfang", lvMid: "Unterwegs", lvGood: "Sicher", lvTop: "Gemeistert",
+    back: "Zurück", settings: "Einstellungen", listen: "Anhören", quit: "Beenden", answer: "Antwort",
+    homeSub: (r, n) => r + " Regeln · " + n + " Übungen",
+    noStore: "Dein Fortschritt kann auf diesem Gerät nicht gespeichert werden. Er gilt nur, solange die App offen ist.",
+    overall: "Gesamtfortschritt", mix: "Gemischt üben", misses: n => "Fehler (" + n + ")", rules: "Regeln",
+    ruleN: n => "Regel " + n, examples: "Beispiele", yourLevel: "Dein Stand",
+    practised: (a, b) => a + " von " + b + " geübt", practiseRule: "Diese Regel üben",
+    setupTitle: "Übung einstellen", mixSub: "Wähle Regeln und Übungstypen", all: "Alle", none: "Keine",
+    types: "Übungstypen", length: "Länge", nQ: n => n + " Fragen", allQ: "Alle", go: "Los geht’s",
+    avail: (n, p) => n + " von " + p + " passenden Übungen", pickSome: "Wähle mindestens eine Regel und einen Übungstyp.",
+    lblMix: "Gemischt", lblMiss: "Fehler üben", lblAgain: "Fehler nochmal",
+    quitAsk: "Übung beenden? Dein Fortschritt bis jetzt ist gespeichert.", again: "Nochmal",
+    sbPh: "Tippe die Wörter in der richtigen Reihenfolge", sbEnd: "Satzende: ", reset: "Zurücksetzen",
+    ufPh: "Schreib den ganzen Satz …", check: "Prüfen", next: "Weiter",
+    nowRight: "Jetzt richtig!", right: "Richtig!", almost: "Fast!", wrong: "Nicht ganz",
+    yours: "Deine Antwort: ", alsoRight: "Auch richtig: ",
+    result: "Ergebnis", firstTry: p => p + "% beim ersten Versuch richtig", review: "Zum Wiederholen",
+    noMiss: "Keine Fehler. Stark!", missAgain: "Diese Fehler nochmal", toHome: "Zur Übersicht",
+    readAloud: "Antwort vorlesen", readOn: "Liest den richtigen Satz nach jeder Antwort vor.", readOff: "Vorlesen ist auf diesem Gerät nicht verfügbar.",
+    langT: "Sprache der Anleitungen", langS: "Deutsch oder Englisch. Die Übungssätze bleiben auf Deutsch.",
+    theme: "Design", themeS: "Hell, dunkel oder wie das Gerät", thAuto: "Auto", thLight: "Hell", thDark: "Dunkel",
+    resetT: "Fortschritt zurücksetzen", resetS: "Löscht Stand und Fehlerliste für alle Regeln.",
+    resetAsk: "Wirklich den ganzen Fortschritt löschen?", noSave: "Speichern ist auf diesem Gerät gerade nicht möglich."
+  },
+  en: {
+    t_gap: "Gap fill", t_mc: "Multiple choice", t_sb: "Sentence building", t_uf: "Transform",
+    h_gap: "Type the missing word", h_mc: "Choose the right form", h_sb: "Put the words in order", h_uf: "Rewrite the sentence",
+    tipComma: "Watch the comma before the subordinate clause.", tipUml: "Almost! Check your ä, ö, ü and ß.",
+    lvNew: "New", lvStart: "Starting", lvMid: "Getting there", lvGood: "Solid", lvTop: "Mastered",
+    back: "Back", settings: "Settings", listen: "Listen", quit: "End", answer: "Answer",
+    homeSub: (r, n) => r + " rules · " + n + " drills",
+    noStore: "Your progress can't be saved on this device. It only lasts while the app is open.",
+    overall: "Overall progress", mix: "Mixed practice", misses: n => "Mistakes (" + n + ")", rules: "Rules",
+    ruleN: n => "Rule " + n, examples: "Examples", yourLevel: "Your level",
+    practised: (a, b) => a + " of " + b + " practised", practiseRule: "Practise this rule",
+    setupTitle: "Set up practice", mixSub: "Choose rules and drill types", all: "All", none: "None",
+    types: "Drill types", length: "Length", nQ: n => n + " questions", allQ: "All", go: "Start",
+    avail: (n, p) => n + " of " + p + " matching drills", pickSome: "Choose at least one rule and one drill type.",
+    lblMix: "Mixed", lblMiss: "Mistake review", lblAgain: "Mistakes again",
+    quitAsk: "End this practice? Your progress so far is saved.", again: "Again",
+    sbPh: "Tap the words in the right order", sbEnd: "Sentence ends with: ", reset: "Reset",
+    ufPh: "Write the whole sentence …", check: "Check", next: "Next",
+    nowRight: "Right this time!", right: "Correct!", almost: "Almost!", wrong: "Not quite",
+    yours: "Your answer: ", alsoRight: "Also correct: ",
+    result: "Results", firstTry: p => p + "% right on the first try", review: "To review",
+    noMiss: "No mistakes. Great work!", missAgain: "Practise these mistakes again", toHome: "Back to overview",
+    readAloud: "Read answer aloud", readOn: "Reads the correct sentence after each answer.", readOff: "Read-aloud isn't available on this device.",
+    langT: "Instruction language", langS: "German or English. The practice sentences stay in German.",
+    theme: "Theme", themeS: "Light, dark or match the device", thAuto: "Auto", thLight: "Light", thDark: "Dark",
+    resetT: "Reset progress", resetS: "Clears your level and mistake list for every rule.",
+    resetAsk: "Really delete all your progress?", noSave: "Saving isn't possible on this device right now."
+  }
+};
+const TASK_EN = [
+  [/^Ins Perfekt$/, "Put it in the Perfekt"],
+  [/^Ins Präteritum$/, "Put it in the Präteritum"],
+  [/^Antworte mit ganzem Satz$/, "Answer with a full sentence"],
+  [/^Ein Satz$/, "Make it one sentence"],
+  [/^Höflicher: (.*)$/, "Make it more polite: $1"],
+  [/^Mit (»[^«]+«) am Anfang$/, "Use $1 at the start"],
+  [/^Mit (.*)$/, "Use $1"],
+  [/^Subjekt: (.*)$/, "Change the subject to: $1"],
+  [/^Verbinde mit (.*)$/, "Join them with $1"],
+  [/^Vergleiche \(so … wie, (.*)\)$/, "Compare with so … wie ($1)"],
+  [/^Vergleiche \((.*)\)$/, "Compare them ($1)"],
+  [/^Wenn ich …, würde …$/, "Rewrite as: Wenn ich …, würde …"],
+  [/^Wer läuft am schnellsten\? \(Superlativ\)$/, "Who runs the fastest? (superlative)"],
+  [/^Wo ist (?:es|sie) jetzt\? \((.*)\)$/, "Where is it now? ($1)"],
+  [/^Wohin\? \((.*)\)$/, "Where to? ($1)"],
+  [/^(»[^«]+«) → Pronomen$/, "Replace $1 with a pronoun"]
+];
+function lang(){ return state.settings.lang === "en" ? "en" : "de"; }
+function L(k){ const v = I18N[lang()][k]; if (typeof v === "function") return v.apply(null, Array.prototype.slice.call(arguments, 1)); return v; }
+function trTask(t){
+  if (lang() !== "en") return t;
+  for (const [re, out] of TASK_EN) if (re.test(t)) return t.replace(re, out);
+  return t;
+}
+function sessLabel(l){ return l && l.charAt(0) === "#" ? L(l.slice(1)) : l; }
+function langBtn(){ const en = lang() === "en"; return '<button class="lang" id="langBtn" aria-label="Sprache / Language"><span class="' + (en ? "" : "on") + '">DE</span><span class="' + (en ? "on" : "") + '">EN</span></button>'; }
+function bindLang(){
+  const b = document.getElementById("langBtn"); if (!b) return;
+  b.onclick = () => { state.settings.lang = lang() === "en" ? "de" : "en"; saveState(); document.documentElement.lang = lang(); render(true); };
+}
 const ICON = {
   back: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>',
   close: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>',
@@ -908,7 +1000,7 @@ const ICON = {
 
 /* ---------- storage (guarded) ---------- */
 let storageOK = true;
-let state = { box: {}, miss: {}, seen: {}, settings: { autoSpeak: false, theme: "auto" } };
+let state = { box: {}, miss: {}, seen: {}, settings: { autoSpeak: false, theme: "auto", lang: "de" } };
 function loadState(){
   try {
     const raw = window.localStorage.getItem(STORE_KEY);
@@ -979,7 +1071,7 @@ function fullSentence(it){
 }
 function speakBtn(text){
   if (!ttsAvailable()) return "";
-  return '<button class="say" data-say="' + esc(text) + '" aria-label="Anhören">' + ICON.speak + "</button>";
+  return '<button class="say" data-say="' + esc(text) + '" aria-label="' + L("listen") + '">' + ICON.speak + "</button>";
 }
 function bindSay(root){
   root.querySelectorAll("[data-say]").forEach(b => b.addEventListener("click", e => { e.stopPropagation(); speak(b.getAttribute("data-say")); }));
@@ -1003,9 +1095,9 @@ function checkText(input, answers, isSentence){
   if (!raw) return { ok: false, empty: true };
   for (const a of answers) if (norm(raw, true) === norm(a, true)) return { ok: true };
   for (const a of answers) if (norm(raw, false) === norm(a, false)) {
-    return { ok: true, tip: isSentence ? "Achte auf das Komma vor dem Nebensatz." : "" };
+    return { ok: true, tip: isSentence ? L("tipComma") : "" };
   }
-  for (const a of answers) if (fold(norm(raw, false)) === fold(norm(a, false))) return { ok: false, almost: true, tip: "Fast! Achte auf ä, ö, ü und ß." };
+  for (const a of answers) if (fold(norm(raw, false)) === fold(norm(a, false))) return { ok: false, almost: true, tip: L("tipUml") };
   return { ok: false };
 }
 
@@ -1017,11 +1109,11 @@ function ruleMastery(r){
   return { pct: Math.round(100 * sum / (5 * r.items.length)), seen };
 }
 function levelLabel(m){
-  if (!m.seen) return "Neu";
-  if (m.pct < 30) return "Anfang";
-  if (m.pct < 60) return "Unterwegs";
-  if (m.pct < 90) return "Sicher";
-  return "Gemeistert";
+  if (!m.seen) return L("lvNew");
+  if (m.pct < 30) return L("lvStart");
+  if (m.pct < 60) return L("lvMid");
+  if (m.pct < 90) return L("lvGood");
+  return L("lvTop");
 }
 function overall(){
   let sum = 0, n = 0;
@@ -1051,9 +1143,10 @@ window.addEventListener("popstate", e => {
   render();
 });
 function topBar(title, sub, left, right){
-  $top.innerHTML = (left || "") + '<h1>' + title + (sub ? "<small>" + sub + "</small>" : "") + "</h1>" + (right || "");
+  $top.innerHTML = (left || "") + '<h1>' + title + (sub ? "<small>" + sub + "</small>" : "") + "</h1>" + langBtn() + (right || "");
+  bindLang();
 }
-function backBtn(){ return '<button class="icon-btn" id="backBtn" aria-label="Zurück">' + ICON.back + "</button>"; }
+function backBtn(){ return '<button class="icon-btn" id="backBtn" aria-label="' + L("back") + '">' + ICON.back + "</button>"; }
 function bindBack(){ const b = document.getElementById("backBtn"); if (b) b.onclick = () => history.back(); }
 function setCTA(html){ $cta.innerHTML = html ? '<div class="sticky-cta"><div class="in">' + html + "</div></div>" : ""; }
 function applyTheme(){
@@ -1062,8 +1155,8 @@ function applyTheme(){
   else document.documentElement.removeAttribute("data-theme");
 }
 
-function render(){
-  window.scrollTo(0, 0);
+function render(keepScroll){
+  if (!keepScroll) window.scrollTo(0, 0);
   setCTA("");
   ({ home: renderHome, rule: renderRule, setup: renderSetup, session: renderSession, results: renderResults, settings: renderSettings }[view.name] || renderHome)();
 }
@@ -1071,15 +1164,15 @@ function render(){
 /* ---------- home ---------- */
 function renderHome(){
   const total = RULES.reduce((n, r) => n + r.items.length, 0);
-  topBar("A2 Grammatik", RULES.length + " Regeln · " + total + " Übungen", "", '<button class="icon-btn" id="gear" aria-label="Einstellungen">' + ICON.gear + "</button>");
+  topBar("A2 Grammatik", L("homeSub", RULES.length, total), "", '<button class="icon-btn" id="gear" aria-label="' + L("settings") + '">' + ICON.gear + "</button>");
   document.getElementById("gear").onclick = () => go({ name: "settings" });
   const ov = overall(), mk = missKeys().length;
   let h = "";
-  if (!storageOK) h += '<div class="warn">Dein Fortschritt kann auf diesem Gerät nicht gespeichert werden. Er gilt nur, solange die App offen ist.</div>';
-  h += '<section class="hero"><div class="big">' + ov + '%</div><div class="lbl">Gesamtfortschritt</div><div class="bar"><i style="width:' + ov + '%"></i></div>' +
-    '<div class="hero-actions"><button class="btn btn-amber" id="mix">Gemischt üben</button>' +
-    '<button class="btn btn-ghost" id="miss"' + (mk ? "" : " disabled") + ">Fehler (" + mk + ")</button></div></section>";
-  h += '<div class="sec">Regeln</div><div class="rules">';
+  if (!storageOK) h += '<div class="warn">' + L("noStore") + '</div>';
+  h += '<section class="hero"><div class="big">' + ov + '%</div><div class="lbl">' + L("overall") + '</div><div class="bar"><i style="width:' + ov + '%"></i></div>' +
+    '<div class="hero-actions"><button class="btn btn-amber" id="mix">' + L("mix") + '</button>' +
+    '<button class="btn btn-ghost" id="miss"' + (mk ? "" : " disabled") + ">" + L("misses", mk) + "</button></div></section>";
+  h += '<div class="sec">' + L("rules") + '</div><div class="rules">';
   RULES.forEach((r, idx) => {
     const m = ruleMastery(r);
     h += '<button class="rule" data-rule="' + r.id + '"><div class="num">' + (idx + 1) + '</div><div class="meta"><div class="t">' + esc(r.title) + '</div><div class="s">' + esc(r.sub) + '</div><div class="mbar"><i class="' + (m.pct >= 90 ? "gold" : "") + '" style="width:' + m.pct + '%"></i></div></div><div class="pct">' + m.pct + "%<span>" + levelLabel(m) + "</span></div></button>";
@@ -1088,14 +1181,14 @@ function renderHome(){
   $app.innerHTML = '<div class="fade">' + h + "</div>";
   $app.querySelectorAll("[data-rule]").forEach(b => b.onclick = () => go({ name: "rule", id: b.dataset.rule }));
   document.getElementById("mix").onclick = () => go({ name: "setup", rules: RULES.map(r => r.id), mix: true });
-  document.getElementById("miss").onclick = () => { if (mk) startSession(missKeys(), "Fehler üben"); };
+  document.getElementById("miss").onclick = () => { if (mk) startSession(missKeys(), "#lblMiss"); };
 }
 
 /* ---------- rule card ---------- */
 function renderRule(){
   const r = ruleById(view.id); if (!r) return go({ name: "home" }, true);
   const idx = RULES.indexOf(r) + 1;
-  topBar(esc(r.title), "Regel " + idx + " · " + esc(r.sub), backBtn());
+  topBar(esc(r.title), L("ruleN", idx) + " · " + esc(r.sub), backBtn());
   bindBack();
   const c = r.card, m = ruleMastery(r);
   let h = '<div class="card"><p class="intro">' + c.intro + "</p>";
@@ -1105,11 +1198,11 @@ function renderRule(){
   });
   h += "</div>";
   h += '<div class="card"><ul class="pts">' + c.points.map(p => "<li>" + p + "</li>").join("") + "</ul></div>";
-  h += '<div class="sec">Beispiele</div><div class="card">' + c.examples.map(e => '<div class="ex"><div><div class="de">' + esc(e[0]) + '</div><div class="en">' + esc(e[1]) + "</div></div>" + speakBtn(e[0]) + "</div>").join("") + "</div>";
-  h += '<div class="sec">Dein Stand</div><div class="card"><div class="row"><div>' + levelLabel(m) + " · " + m.seen + " von " + r.items.length + ' geübt</div><div class="pct">' + m.pct + '%</div></div><div class="mbar"><i style="width:' + m.pct + '%"></i></div></div>';
+  h += '<div class="sec">' + L("examples") + '</div><div class="card">' + c.examples.map(e => '<div class="ex"><div><div class="de">' + esc(e[0]) + '</div><div class="en">' + esc(e[1]) + "</div></div>" + speakBtn(e[0]) + "</div>").join("") + "</div>";
+  h += '<div class="sec">' + L("yourLevel") + '</div><div class="card"><div class="row"><div>' + levelLabel(m) + " · " + L("practised", m.seen, r.items.length) + '</div><div class="pct">' + m.pct + '%</div></div><div class="mbar"><i style="width:' + m.pct + '%"></i></div></div>';
   $app.innerHTML = '<div class="fade">' + h + "</div>";
   bindSay($app);
-  setCTA('<button class="btn btn-primary" id="go">Diese Regel üben</button>');
+  setCTA('<button class="btn btn-primary" id="go">' + L("practiseRule") + '</button>');
   document.getElementById("go").onclick = () => go({ name: "setup", rules: [r.id], mix: false });
 }
 
@@ -1118,21 +1211,21 @@ let setup = { types: { gap: true, mc: true, sb: true, uf: true }, len: 10 };
 function renderSetup(){
   const single = !view.mix;
   const sel = new Set(view.rules || []);
-  topBar(single ? "Übung einstellen" : "Gemischt üben", single ? esc(ruleById(view.rules[0]).title) : "Wähle Regeln und Übungstypen", backBtn());
+  topBar(single ? L("setupTitle") : L("mix"), single ? esc(ruleById(view.rules[0]).title) : L("mixSub"), backBtn());
   bindBack();
   let h = "";
   if (!single) {
-    h += '<div class="row"><div class="sec" style="margin-top:6px">Regeln</div><div><button class="linkbtn" id="all">Alle</button> · <button class="linkbtn" id="none">Keine</button></div></div><div class="pick">';
+    h += '<div class="row"><div class="sec" style="margin-top:6px">' + L("rules") + '</div><div><button class="linkbtn" id="all">' + L("all") + '</button> · <button class="linkbtn" id="none">' + L("none") + '</button></div></div><div class="pick">';
     RULES.forEach(r => {
       h += '<label><input type="checkbox" data-r="' + r.id + '"' + (sel.has(r.id) ? " checked" : "") + "><span>" + esc(r.title) + '</span><span class="p">' + ruleMastery(r).pct + "%</span></label>";
     });
     h += "</div>";
   }
-  h += '<div class="sec">Übungstypen</div><div class="chips">' + Object.keys(TYPES).map(t => '<button class="chip' + (setup.types[t] ? " on" : "") + '" data-t="' + t + '">' + TYPES[t] + "</button>").join("") + "</div>";
-  h += '<div class="sec">Länge</div><div class="seg">' + [10, 20, 0].map(n => '<button data-n="' + n + '" class="' + (setup.len === n ? "on" : "") + '">' + (n ? n + " Fragen" : "Alle") + "</button>").join("") + "</div>";
+  h += '<div class="sec">' + L("types") + '</div><div class="chips">' + ["gap", "mc", "sb", "uf"].map(t => '<button class="chip' + (setup.types[t] ? " on" : "") + '" data-t="' + t + '">' + L("t_" + t) + "</button>").join("") + "</div>";
+  h += '<div class="sec">' + L("length") + '</div><div class="seg">' + [10, 20, 0].map(n => '<button data-n="' + n + '" class="' + (setup.len === n ? "on" : "") + '">' + (n ? L("nQ", n) : L("allQ")) + "</button>").join("") + "</div>";
   h += '<p class="empty-note" id="avail"></p>';
   $app.innerHTML = '<div class="fade">' + h + "</div>";
-  setCTA('<button class="btn btn-primary" id="start">Los geht’s</button>');
+  setCTA('<button class="btn btn-primary" id="start">' + L("go") + '</button>');
   const $start = document.getElementById("start"), $avail = document.getElementById("avail");
   function chosen(){ return single ? view.rules : Array.from($app.querySelectorAll("[data-r]")).filter(x => x.checked).map(x => x.dataset.r); }
   function pool(){
@@ -1142,7 +1235,7 @@ function renderSetup(){
   }
   function refresh(){
     const p = pool(), n = setup.len ? Math.min(setup.len, p.length) : p.length;
-    $avail.textContent = p.length ? n + " von " + p.length + " passenden Übungen" : "Wähle mindestens eine Regel und einen Übungstyp.";
+    $avail.textContent = p.length ? L("avail", n, p.length) : L("pickSome");
     $start.disabled = !p.length;
   }
   $app.querySelectorAll("[data-t]").forEach(b => b.onclick = () => { setup.types[b.dataset.t] = !setup.types[b.dataset.t]; b.classList.toggle("on"); refresh(); });
@@ -1157,7 +1250,7 @@ function renderSetup(){
     // weakest first, random within the same box, then shuffle the chosen set
     const ranked = shuffle(p).sort((a, b) => boxOf(a) - boxOf(b));
     const pick = setup.len ? ranked.slice(0, setup.len) : ranked;
-    const label = single ? ruleById(view.rules[0]).title : "Gemischt";
+    const label = single ? ruleById(view.rules[0]).title : "#lblMix";
     startSession(shuffle(pick), label);
   };
   refresh();
@@ -1176,43 +1269,59 @@ function renderSession(){
   if (session.pos >= session.queue.length) return go({ name: "results" }, true);
   const entry = session.queue[session.pos];
   const { r, it } = itemOf(entry.k);
-  session.answered = false;
+  const fresh = session.renderedPos !== session.pos;
+  if (fresh) { session.renderedPos = session.pos; session.answered = false; session.fb = null; session.opts = null; session.sb = null; }
   const pct = Math.round(100 * session.done / session.total);
-  $top.innerHTML = '<button class="icon-btn" id="quit" aria-label="Beenden">' + ICON.close + '</button><div class="prog"><i style="width:' + pct + '%"></i></div><div class="count">' + Math.min(session.done + 1, session.total) + " / " + session.total + "</div>";
-  document.getElementById("quit").onclick = () => { if (session.done === 0 || confirm("Übung beenden? Dein Fortschritt bis jetzt ist gespeichert.")) { session.done ? go({ name: "results" }, true) : (session = null, history.back()); } };
-  let h = '<div class="fade"><span class="tag">' + esc(r.title) + "</span>" + (entry.retry ? ' <span class="tag" style="background:var(--amber-soft);color:var(--amber-ink)">Nochmal</span>' : "");
-  h += '<div class="kind">' + TYPES[it.t] + " · " + TYPE_HELP[it.t] + "</div>";
+  $top.innerHTML = '<button class="icon-btn" id="quit" aria-label="' + L("quit") + '">' + ICON.close + '</button><div class="prog"><i style="width:' + pct + '%"></i></div><div class="count">' + Math.min(session.done + 1, session.total) + " / " + session.total + "</div>" + langBtn();
+  bindLang();
+  document.getElementById("quit").onclick = () => { if (session.done === 0 || confirm(L("quitAsk"))) { session.done ? go({ name: "results" }, true) : (session = null, history.back()); } };
+  let h = '<div class="fade"><span class="tag">' + esc(r.title) + "</span>" + (entry.retry ? ' <span class="tag" style="background:var(--amber-soft);color:var(--amber-ink)">' + L("again") + '</span>' : "");
+  h += '<div class="kind">' + L("t_" + it.t) + " · " + L("h_" + it.t) + "</div>";
   if (it.t === "gap") {
     const parts = it.q.split("___");
-    h += '<p class="q">' + esc(parts[0]) + '<input class="gapin" id="gin" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" aria-label="Antwort">' + esc(parts[1]) + "</p>";
+    h += '<p class="q">' + esc(parts[0]) + '<input class="gapin" id="gin" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" aria-label="' + L("answer") + '">' + esc(parts[1]) + "</p>";
     if (it.h) h += '<span class="hint">(' + esc(it.h) + ")</span>";
     h += keysRow();
   } else if (it.t === "mc") {
     h += '<p class="q">' + esc(it.q).replace("___", '<span class="blank">&nbsp;</span>') + "</p>";
     if (it.h) h += '<span class="hint">(' + esc(it.h) + ")</span>";
-    session.opts = shuffle(it.o);
+    if (!session.opts) session.opts = shuffle(it.o);
     h += '<div class="opts">' + session.opts.map((o, i) => '<button class="opt" data-o="' + i + '">' + esc(o) + "</button>").join("") + "</div>";
   } else if (it.t === "sb") {
-    const end = (it.s.match(/[.?!]$/) || ["."])[0];
-    let toks = it.s.replace(/[.?!]$/, "").split(/\s+/);
-    if (!it.cap) toks[0] = toks[0].charAt(0).toLowerCase() + toks[0].slice(1);
-    let order = shuffle(toks.map((_, i) => i));
-    if (order.every((v, i) => v === i) && toks.length > 1) order = order.reverse();
-    session.sb = { toks, order, built: [], end };
-    h += '<div class="build empty" id="build"></div><div class="row" style="margin-top:6px"><span class="hint">Satzende: ' + esc(end) + '</span><button class="linkbtn" id="clr">' + "Zurücksetzen</button></div>";
+    if (!session.sb) {
+      const end = (it.s.match(/[.?!]$/) || ["."])[0];
+      let toks = it.s.replace(/[.?!]$/, "").split(/\s+/);
+      if (!it.cap) toks[0] = toks[0].charAt(0).toLowerCase() + toks[0].slice(1);
+      let order = shuffle(toks.map((_, i) => i));
+      if (order.every((v, i) => v === i) && toks.length > 1) order = order.reverse();
+      session.sb = { toks, order, built: [], end };
+    }
+    h += '<div class="build empty" id="build" data-ph="' + esc(L("sbPh")) + '"></div><div class="row" style="margin-top:6px"><span class="hint">' + L("sbEnd") + esc(session.sb.end) + '</span><button class="linkbtn" id="clr">' + L("reset") + "</button></div>";
     h += '<div class="pool" id="pool"></div>';
   } else {
-    h += '<div class="src">' + esc(it.q) + "</div><div class=\"task\">" + esc(it.task) + "</div>";
-    h += '<textarea class="uf" id="uin" autocomplete="off" autocapitalize="sentences" spellcheck="false" placeholder="Schreib den ganzen Satz …" aria-label="Antwort"></textarea>';
+    h += '<div class="src">' + esc(it.q) + "</div><div class=\"task\">" + esc(trTask(it.task)) + "</div>";
+    h += '<textarea class="uf" id="uin" autocomplete="off" autocapitalize="sentences" spellcheck="false" placeholder="' + esc(L("ufPh")) + '" aria-label="' + L("answer") + '"></textarea>';
     h += keysRow();
   }
   h += '<div id="fb"></div></div>';
+  const prevIn = document.getElementById("gin") || document.getElementById("uin");
+  const prevVal = !fresh && prevIn ? prevIn.value : "";
   $app.innerHTML = h;
-  if (it.t !== "mc") setCTA('<button class="btn btn-primary" id="check">Prüfen</button>');
-  wireItem(entry, r, it);
+  if (it.t !== "mc") setCTA('<button class="btn btn-primary" id="check">' + L("check") + '</button>');
+  wireItem(entry, r, it, fresh);
+  const inp = document.getElementById("gin") || document.getElementById("uin");
+  if (inp && prevVal) inp.value = prevVal;
+  if (session.answered && session.fb) {
+    if (inp) { inp.value = session.fb.given; inp.disabled = true; }
+    if (it.t === "mc") $app.querySelectorAll("[data-o]").forEach(x => {
+      x.disabled = true; const val = session.opts[+x.dataset.o];
+      if (val === it.o[0]) x.classList.add("right"); else if (val === session.fb.given) x.classList.add("wrong");
+    });
+    drawFb(entry, it, session.fb.res, session.fb.given, true);
+  }
 }
 function keysRow(){ return '<div class="keys">' + ["ä", "ö", "ü", "ß"].map(c => '<button data-k="' + c + '" type="button">' + c + "</button>").join("") + "</div>"; }
-function wireItem(entry, r, it){
+function wireItem(entry, r, it, fresh){
   const check = document.getElementById("check");
   const input = document.getElementById("gin") || document.getElementById("uin");
   $app.querySelectorAll("[data-k]").forEach(b => {
@@ -1225,7 +1334,7 @@ function wireItem(entry, r, it){
     };
   });
   if (input) {
-    setTimeout(() => { try { input.focus({ preventScroll: true }); } catch (e) {} }, 60);
+    if (fresh) setTimeout(() => { try { input.focus({ preventScroll: true }); } catch (e) {} }, 60);
     input.addEventListener("keydown", e => {
       if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); session.answered ? next() : check.click(); }
     });
@@ -1290,23 +1399,31 @@ function finish(entry, r, it, res, given){
     const at = Math.min(session.queue.length, session.pos + 4);
     session.queue.splice(at, 0, { k: entry.k, retry: entry.retry + 1 });
   }
+  session.fb = { res, given };
+  drawFb(entry, it, res, given, false);
+}
+function drawFb(entry, it, res, given, redraw){
+  const full = fullSentence(it);
+  if (res.almost) res.tip = L("tipUml");
+  else if (res.ok && res.tip) res.tip = L("tipComma");
   const cls = res.ok ? "ok" : (res.almost ? "almost" : "no");
-  const head = res.ok ? (entry.retry ? "Jetzt richtig!" : "Richtig!") : (res.almost ? "Fast!" : "Nicht ganz");
+  const head = res.ok ? (entry.retry ? L("nowRight") : L("right")) : (res.almost ? L("almost") : L("wrong"));
   let correctTxt = full;
   if (it.t === "gap") correctTxt = it.q.replace("___", "[" + it.a[0] + "]");
   let h = '<div class="fb ' + cls + ' fade"><h3>' + head + "</h3>";
   h += '<div class="ans"><div>' + esc(correctTxt).replace(/\[([^\]]+)\]/, "<b>$1</b>") + "</div>" + speakBtn(full) + "</div>";
-  if (!res.ok && given) h += '<div class="yours">Deine Antwort: <s>' + esc(given) + "</s></div>";
-  if (res.ok && it.t === "uf" && it.a.length > 1 && norm(given, false) !== norm(it.a[0], false)) h += '<div class="yours">Auch richtig: ' + esc(it.a[0]) + "</div>";
+  if (!res.ok && given) h += '<div class="yours">' + L("yours") + '<s>' + esc(given) + "</s></div>";
+  if (res.ok && it.t === "uf" && it.a.length > 1 && norm(given, false) !== norm(it.a[0], false)) h += '<div class="yours">' + L("alsoRight") + esc(it.a[0]) + "</div>";
   if (res.tip) h += '<div class="tip">' + esc(res.tip) + "</div>";
   h += '<div class="why">' + esc(it.why) + '</div><div class="en">' + esc(it.en) + "</div></div>";
   document.getElementById("fb").innerHTML = h;
   bindSay(document.getElementById("fb"));
   const pct = Math.round(100 * session.done / session.total);
   const bar = $top.querySelector(".prog i"); if (bar) bar.style.width = pct + "%";
-  setCTA('<button class="btn btn-primary" id="nextBtn">Weiter</button>');
+  setCTA('<button class="btn btn-primary" id="nextBtn">' + L("next") + '</button>');
   const nb = document.getElementById("nextBtn");
   nb.onclick = next;
+  if (redraw) return;
   if (state.settings.autoSpeak) speak(full);
   setTimeout(() => {
     const fb = document.getElementById("fb");
@@ -1322,35 +1439,37 @@ document.addEventListener("keydown", e => {
 /* ---------- results ---------- */
 function renderResults(){
   if (!session) return go({ name: "home" }, true);
-  topBar("Ergebnis", esc(session.label), "");
+  topBar(L("result"), esc(sessLabel(session.label)), "");
   const s = session, pct = s.done ? Math.round(100 * s.correct / s.done) : 0;
-  let h = '<div class="card fade" style="text-align:center"><div class="res-big">' + s.correct + " / " + s.done + '</div><div style="color:var(--ink-2);margin-top:6px">' + pct + "% beim ersten Versuch richtig</div></div>";
+  let h = '<div class="card fade" style="text-align:center"><div class="res-big">' + s.correct + " / " + s.done + '</div><div style="color:var(--ink-2);margin-top:6px">' + L("firstTry", pct) + "</div></div>";
   const missed = Array.from(new Set(s.missed));
   if (missed.length) {
-    h += '<div class="sec">Zum Wiederholen</div><div class="card">' + missed.map(k => { const { r, it } = itemOf(k); return '<div class="miss"><div class="a">' + esc(fullSentence(it)) + '</div><div class="w">' + esc(r.title) + " · " + esc(it.why) + "</div></div>"; }).join("") + "</div>";
-  } else if (s.done) h += '<p class="empty-note">Keine Fehler. Stark!</p>';
-  h += '<div class="actions">' + (missed.length ? '<button class="btn btn-primary" id="again">Diese Fehler nochmal</button>' : "") + '<button class="btn btn-line" id="home">Zur Übersicht</button></div>';
+    h += '<div class="sec">' + L("review") + '</div><div class="card">' + missed.map(k => { const { r, it } = itemOf(k); return '<div class="miss"><div class="a">' + esc(fullSentence(it)) + '</div><div class="w">' + esc(r.title) + " · " + esc(it.why) + "</div></div>"; }).join("") + "</div>";
+  } else if (s.done) h += '<p class="empty-note">' + L("noMiss") + '</p>';
+  h += '<div class="actions">' + (missed.length ? '<button class="btn btn-primary" id="again">' + L("missAgain") + '</button>' : "") + '<button class="btn btn-line" id="home">' + L("toHome") + '</button></div>';
   $app.innerHTML = h;
   const again = document.getElementById("again");
-  if (again) again.onclick = () => startSession(shuffle(missed), "Fehler nochmal");
+  if (again) again.onclick = () => startSession(shuffle(missed), "#lblAgain");
   document.getElementById("home").onclick = () => { session = null; go({ name: "home" }); };
 }
 
 /* ---------- settings ---------- */
 function renderSettings(){
-  topBar("Einstellungen", "", backBtn());
+  topBar(L("settings"), "", backBtn());
   bindBack();
   const tts = ttsAvailable();
-  let h = '<div class="card"><div class="toggle"><div>Antwort vorlesen<small>' + (tts ? "Liest den richtigen Satz nach jeder Antwort vor." : "Vorlesen ist auf diesem Gerät nicht verfügbar.") + '</small></div><label class="sw"><input type="checkbox" id="auto"' + (state.settings.autoSpeak && tts ? " checked" : "") + (tts ? "" : " disabled") + "><span></span></label></div>";
-  h += '<div class="toggle"><div>Design<small>Hell, dunkel oder wie das Gerät</small></div></div><div class="seg" id="theme">' + [["auto", "Auto"], ["light", "Hell"], ["dark", "Dunkel"]].map(t => '<button data-th="' + t[0] + '" class="' + (state.settings.theme === t[0] ? "on" : "") + '">' + t[1] + "</button>").join("") + "</div></div>";
-  h += '<div class="card"><div class="toggle"><div>Fortschritt zurücksetzen<small>Löscht Stand und Fehlerliste für alle Regeln.</small></div></div><button class="btn btn-line" id="reset" style="color:var(--bad)">Zurücksetzen</button></div>';
-  if (!storageOK) h += '<div class="warn">Speichern ist auf diesem Gerät gerade nicht möglich.</div>';
+  let h = '<div class="card"><div class="toggle"><div>' + L("langT") + '<small>' + L("langS") + '</small></div></div><div class="seg" style="margin-bottom:8px">' + [["de", "Deutsch"], ["en", "English"]].map(t => '<button data-lg="' + t[0] + '" class="' + (lang() === t[0] ? "on" : "") + '">' + t[1] + "</button>").join("") + "</div>";
+  h += '<div class="toggle"><div>' + L("readAloud") + '<small>' + (tts ? L("readOn") : L("readOff")) + '</small></div><label class="sw"><input type="checkbox" id="auto"' + (state.settings.autoSpeak && tts ? " checked" : "") + (tts ? "" : " disabled") + "><span></span></label></div>";
+  h += '<div class="toggle"><div>' + L("theme") + '<small>' + L("themeS") + '</small></div></div><div class="seg" id="theme">' + [["auto", L("thAuto")], ["light", L("thLight")], ["dark", L("thDark")]].map(t => '<button data-th="' + t[0] + '" class="' + (state.settings.theme === t[0] ? "on" : "") + '">' + t[1] + "</button>").join("") + "</div></div>";
+  h += '<div class="card"><div class="toggle"><div>' + L("resetT") + '<small>' + L("resetS") + '</small></div></div><button class="btn btn-line" id="reset" style="color:var(--bad)">' + L("reset") + '</button></div>';
+  if (!storageOK) h += '<div class="warn">' + L("noSave") + '</div>';
   $app.innerHTML = '<div class="fade">' + h + "</div>";
   const a = document.getElementById("auto");
   if (a) a.onchange = () => { state.settings.autoSpeak = a.checked; saveState(); if (a.checked) speak("Gut gemacht!"); };
+  $app.querySelectorAll("[data-lg]").forEach(b => b.onclick = () => { state.settings.lang = b.dataset.lg; saveState(); document.documentElement.lang = lang(); render(true); });
   $app.querySelectorAll("[data-th]").forEach(b => b.onclick = () => { state.settings.theme = b.dataset.th; saveState(); applyTheme(); $app.querySelectorAll("[data-th]").forEach(x => x.classList.toggle("on", x === b)); });
   document.getElementById("reset").onclick = () => {
-    if (!confirm("Wirklich den ganzen Fortschritt löschen?")) return;
+    if (!confirm(L("resetAsk"))) return;
     state.box = {}; state.miss = {}; state.seen = {}; saveState(); go({ name: "home" });
   };
 }
@@ -1358,13 +1477,14 @@ function renderSettings(){
 /* ---------- boot ---------- */
 loadState();
 applyTheme();
+document.documentElement.lang = lang();
 try { history.replaceState({ name: "home" }, ""); } catch (e) {}
 render();
 if ("serviceWorker" in navigator && /^https?:$/.test(location.protocol)) {
   window.addEventListener("load", () => { navigator.serviceWorker.register("sw.js").catch(() => {}); });
 }
 // test hook
-window.__a2 = { RULES, checkText, norm, state: () => state, cur: () => session && session.queue[session.pos] };
+window.__a2 = { RULES, checkText, norm, state: () => state, cur: () => session && session.queue[session.pos], trTask, L };
 })();
 </script>
 </body>
