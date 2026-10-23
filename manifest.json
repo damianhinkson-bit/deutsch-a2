@@ -1,13 +1,13 @@
 {
-  "name": "A2 Grammatik",
-  "short_name": "A2 Grammatik",
+  "name": "Deutsch Grammatik",
+  "short_name": "Grammatik",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
   "background_color": "#f5f2ec",
   "theme_color": "#0e4f5c",
   "lang": "de",
-  "description": "A2 German grammar trainer",
+  "description": "German grammar trainer A1, A2, B1",
   "icons": [
     {
       "src": "icons/icon-192.png",
